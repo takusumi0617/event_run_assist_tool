@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35004.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "event_run_assist_tool", "event_run_assist_tool.csproj", "{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9026D2B4-B971-4828-AA52-B8ED280C6B7D}
+	EndGlobalSection
+EndGlobal
