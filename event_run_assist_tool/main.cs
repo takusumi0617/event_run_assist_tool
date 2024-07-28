@@ -9,8 +9,8 @@ namespace event_run_assist_tool
 {
     internal class main
     {
-        string temp_directory = "";
-        public string directory ()
+        static string temp_directory = "";
+        public static string directory ()
         {
             if (temp_directory == "")
             {
