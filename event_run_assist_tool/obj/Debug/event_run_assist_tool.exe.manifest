@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="event_run_assist_tool.exe" size="8704">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="event_run_assist_tool.exe" size="23040">
       <assemblyIdentity name="event_run_assist_tool" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Jcj6GP8S0TyacuT/5sf3LymHzadmu5N0lD154YmxCXc=</dsig:DigestValue>
+        <dsig:DigestValue>ivotmjwtCQK9F0qo+DLLcxECE6tWQA+h346aSReHIjo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
