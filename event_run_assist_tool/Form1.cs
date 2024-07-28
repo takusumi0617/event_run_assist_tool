@@ -16,5 +16,11 @@ namespace event_run_assist_tool
         {
             InitializeComponent();
         }
+        
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form form2 = new Form2();
+            form2.ShowDialog();
+        }
     }
 }
