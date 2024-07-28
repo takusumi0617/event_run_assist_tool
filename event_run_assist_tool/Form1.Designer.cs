@@ -128,6 +128,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "イベント支援ツール";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

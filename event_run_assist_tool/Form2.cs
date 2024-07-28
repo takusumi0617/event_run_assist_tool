@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Windows.Forms;
 
 namespace event_run_assist_tool
@@ -16,7 +17,7 @@ namespace event_run_assist_tool
         private void button1_Click(object sender, EventArgs e)
         {
             int rank = 100;
-            switch(comboBox2.SelectedIndex)
+            switch (comboBox2.SelectedIndex)
             {
                 case 0:
                     rank = 1;
@@ -40,19 +41,23 @@ namespace event_run_assist_tool
                     rank = 100;
                     break;
             }
-            int bonus = int.Parse(textBox2.Text) + (10 * int.Parse(textBox3.Text)) + (int.Parse(textBox4.Text)/10);
+            int bonus = int.Parse(textBox2.Text) + int.Parse(textBox6.Text) + (10 * (int.Parse(textBox3.Text) + int.Parse(textBox4.Text))) + (int.Parse(textBox4.Text) / 10);
 
             Dictionary<string, string> dic = new Dictionary<string, string>
             {
                 {"goal", textBox1.Text},
                 { "rank", rank.ToString()},
-                { "bonus",  }
+                { "bonus",  bonus.ToString()},
+                { "speed", textBox7.Text},
+                { "ppp", textBox8.Text},
+                { "days", textBox10.Text},
+                { "tpp", textBox10.Text}
             };
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.FileName = "event_run_" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss") + ".xml";
+            sfd.FileName = "event_run_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".json";
             //はじめに表示されるフォルダを指定する
-            sfd.InitialDirectory = main.directory() + @"\data\";
+            sfd.InitialDirectory = main.directory() + @"\data";
             //[ファイルの種類]に表示される選択肢を指定する
             sfd.Filter = "JSONファイル(*.json)|*.json|すべてのファイル(*.*)|*.*";
             //[ファイルの種類]ではじめに選択されるものを指定する
@@ -67,9 +72,8 @@ namespace event_run_assist_tool
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 //OKボタンがクリックされたとき、選択されたファイル名を表示する
-                Console.WriteLine(sfd.FileName);
-                StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.GetEncoding("shift_jis"));
-                sw.WriteLine();
+                string jsonString = JsonSerializer.Serialize(dic);
+                File.WriteAllText(sfd.FileName, jsonString, Encoding.GetEncoding("Shift_JIS"));
             }
         }
 
@@ -263,7 +267,6 @@ namespace event_run_assist_tool
                     MessageBox.Show("選択された情報が見つかりません。", "不正な値", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
-
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)

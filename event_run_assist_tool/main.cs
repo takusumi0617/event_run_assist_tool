@@ -1,16 +1,12 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace event_run_assist_tool
 {
     internal class main
     {
         static string temp_directory = "";
-        public static string directory ()
+        public static string directory()
         {
             if (temp_directory == "")
             {
@@ -21,16 +17,11 @@ namespace event_run_assist_tool
                     {
                         using (RegistryKey key1 = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\erat"))
                         {
-                            if (key1 == null)
-                            {
-                                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
-                            }
-
                             // キーに値を設定
                             key1.SetValue("path", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat");
+                            temp_directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
+                            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
                         }
-                        temp_directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
-                        return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
                     }
                     // キーの値を読み込む
                     object value = key.GetValue("path");
@@ -38,20 +29,15 @@ namespace event_run_assist_tool
                     {
                         using (RegistryKey key1 = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\erat"))
                         {
-                            if (key1 == null)
-                            {
-                                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
-                            }
-
-                            // キーに値を設定
                             key1.SetValue("path", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat");
+                            temp_directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
+                            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
                         }
-                        temp_directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
-                        return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat";
                     }
                     else
                     {
-                        return $"{value}";
+                        temp_directory = $"{value}";
+                        return temp_directory;
                     }
                 }
             }
