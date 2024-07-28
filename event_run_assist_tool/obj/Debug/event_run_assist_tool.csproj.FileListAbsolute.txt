@@ -14,3 +14,6 @@ C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\obj\
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\obj\Debug\event_run_assist_tool.application
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\obj\Debug\event_run_assist_tool.exe
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\obj\Debug\event_run_assist_tool.pdb
+C:\Users\takus\Documents\github\erat\event_run_assist_tool\event_run_assist_tool\obj\Debug\event_run_assist_tool.csproj.AssemblyReference.cache
+C:\Users\takus\Documents\github\erat\event_run_assist_tool\event_run_assist_tool\obj\Debug\event_run_assist_tool.exe
+C:\Users\takus\Documents\github\erat\event_run_assist_tool\event_run_assist_tool\obj\Debug\event_run_assist_tool.pdb
