@@ -67,6 +67,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -96,7 +98,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(554, 339);
+            this.groupBox1.Size = new System.Drawing.Size(554, 362);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "条件の作成";
@@ -116,7 +118,7 @@
             this.groupBox4.Controls.Add(this.label15);
             this.groupBox4.Controls.Add(this.textBox7);
             this.groupBox4.Controls.Add(this.label14);
-            this.groupBox4.Location = new System.Drawing.Point(7, 235);
+            this.groupBox4.Location = new System.Drawing.Point(7, 258);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(540, 91);
             this.groupBox4.TabIndex = 5;
@@ -242,7 +244,7 @@
             this.groupBox3.Controls.Add(this.textBox2);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(7, 112);
+            this.groupBox3.Location = new System.Drawing.Point(7, 135);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(540, 117);
             this.groupBox3.TabIndex = 4;
@@ -398,6 +400,8 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label21);
+            this.groupBox2.Controls.Add(this.comboBox2);
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.comboBox1);
@@ -406,7 +410,7 @@
             this.groupBox2.Controls.Add(this.radioButton2);
             this.groupBox2.Location = new System.Drawing.Point(7, 21);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(540, 85);
+            this.groupBox2.Size = new System.Drawing.Size(540, 108);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "1.目標ポイント数の設定";
@@ -419,7 +423,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(129, 21);
             this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "0";
+            this.textBox1.Text = "88880000";
             // 
             // label3
             // 
@@ -445,7 +449,8 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(125, 23);
             this.comboBox1.TabIndex = 3;
-            this.comboBox1.Text = "VirtualSinger";
+            this.comboBox1.Text = "Leo/need";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // radioButton1
             // 
@@ -458,6 +463,7 @@
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "ユニット一覧から自動設定";
             this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // label2
             // 
@@ -484,18 +490,45 @@
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button1.Location = new System.Drawing.Point(189, 388);
+            this.button1.Location = new System.Drawing.Point(174, 411);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(221, 36);
             this.button1.TabIndex = 6;
             this.button1.Text = "変数データをセーブする";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "1位",
+            "50位",
+            "100位",
+            "200位(精度低)",
+            "500位(精度低)",
+            "1000位"});
+            this.comboBox2.Location = new System.Drawing.Point(81, 74);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(125, 23);
+            this.comboBox2.TabIndex = 6;
+            this.comboBox2.Text = "100位";
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(22, 77);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(31, 15);
+            this.label21.TabIndex = 7;
+            this.label21.Text = "順位";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 436);
+            this.ClientSize = new System.Drawing.Size(580, 455);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
@@ -559,5 +592,7 @@
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }

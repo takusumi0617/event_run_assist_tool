@@ -7,14 +7,14 @@
     <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="event_run_assist_tool.exe.manifest" size="4801">
+    <dependentAssembly dependencyType="install" codebase="event_run_assist_tool.exe.manifest" size="11089">
       <assemblyIdentity name="event_run_assist_tool.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>057oswzGGszIC2+iU8IsBrpywKVCWgz2c+nTnJMHpMI=</dsig:DigestValue>
+        <dsig:DigestValue>cZl2pHuHwIux/X7CfnFybX1FEjVXjY3WvUryroHNTfE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
