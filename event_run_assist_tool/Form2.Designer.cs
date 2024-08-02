@@ -60,6 +60,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -67,8 +69,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label21 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -98,7 +100,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(554, 362);
+            this.groupBox1.Size = new System.Drawing.Size(554, 567);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "条件の作成";
@@ -107,6 +109,8 @@
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.dateTimePicker2);
+            this.groupBox4.Controls.Add(this.dateTimePicker1);
             this.groupBox4.Controls.Add(this.label20);
             this.groupBox4.Controls.Add(this.textBox10);
             this.groupBox4.Controls.Add(this.label19);
@@ -120,7 +124,7 @@
             this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Location = new System.Drawing.Point(7, 258);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(540, 91);
+            this.groupBox4.Size = new System.Drawing.Size(540, 302);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "3.環境変数の設定";
@@ -182,11 +186,11 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(47, 54);
+            this.label16.Location = new System.Drawing.Point(47, 118);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(67, 15);
             this.label16.TabIndex = 14;
-            this.label16.Text = "イベント日数";
+            this.label16.Text = "イベント期間";
             // 
             // textBox8
             // 
@@ -415,6 +419,32 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "1.目標ポイント数の設定";
             // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(22, 77);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(31, 15);
+            this.label21.TabIndex = 7;
+            this.label21.Text = "順位";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "1位",
+            "50位",
+            "100位",
+            "200位(精度低)",
+            "500位(精度低)",
+            "1000位"});
+            this.comboBox2.Location = new System.Drawing.Point(81, 74);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(125, 23);
+            this.comboBox2.TabIndex = 6;
+            this.comboBox2.Text = "100位";
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // textBox1
             // 
             this.textBox1.Enabled = false;
@@ -490,7 +520,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button1.Location = new System.Drawing.Point(174, 411);
+            this.button1.Location = new System.Drawing.Point(164, 616);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(221, 36);
             this.button1.TabIndex = 6;
@@ -498,37 +528,31 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // comboBox2
+            // dateTimePicker1
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "1位",
-            "50位",
-            "100位",
-            "200位(精度低)",
-            "500位(精度低)",
-            "1000位"});
-            this.comboBox2.Location = new System.Drawing.Point(81, 74);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(125, 23);
-            this.comboBox2.TabIndex = 6;
-            this.comboBox2.Text = "100位";
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.dateTimePicker1.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(133, 113);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(157, 21);
+            this.dateTimePicker1.TabIndex = 21;
+            this.dateTimePicker1.Value = new System.DateTime(2024, 1, 1, 15, 0, 0, 0);
             // 
-            // label21
+            // dateTimePicker2
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(22, 77);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(31, 15);
-            this.label21.TabIndex = 7;
-            this.label21.Text = "順位";
+            this.dateTimePicker2.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker2.Location = new System.Drawing.Point(332, 113);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(157, 21);
+            this.dateTimePicker2.TabIndex = 22;
+            this.dateTimePicker2.Value = new System.DateTime(2024, 1, 1, 21, 0, 0, 0);
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 455);
+            this.ClientSize = new System.Drawing.Size(580, 664);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
@@ -594,5 +618,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
     }
 }
