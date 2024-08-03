@@ -1,3 +1,5 @@
-event_run_assist_tool/bin/
-event_run_assist_tool/.vs/
-.vs/
+event_run_assist_tool/bin
+event_run_assist_tool/obj
+event_run_assist_tool/.vs
+.vs
+event_run_assist_tool/obj/Debug/event_run_assist_tool.csproj.AssemblyReference.cache

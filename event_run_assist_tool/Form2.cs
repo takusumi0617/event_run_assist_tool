@@ -71,7 +71,6 @@ namespace event_run_assist_tool
             //ダイアログを表示する
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                //OKボタンがクリックされたとき、選択されたファイル名を表示する
                 string jsonString = JsonSerializer.Serialize(dic);
                 File.WriteAllText(sfd.FileName, jsonString, Encoding.GetEncoding("Shift_JIS"));
             }
