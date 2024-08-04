@@ -31,12 +31,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label20 = new System.Windows.Forms.Label();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.textBox9 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -69,8 +69,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -100,7 +109,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(554, 567);
+            this.groupBox1.Size = new System.Drawing.Size(554, 389);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "条件の作成";
@@ -109,14 +118,13 @@
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.label18);
             this.groupBox4.Controls.Add(this.dateTimePicker2);
             this.groupBox4.Controls.Add(this.dateTimePicker1);
             this.groupBox4.Controls.Add(this.label20);
             this.groupBox4.Controls.Add(this.textBox10);
             this.groupBox4.Controls.Add(this.label19);
-            this.groupBox4.Controls.Add(this.label18);
             this.groupBox4.Controls.Add(this.label17);
-            this.groupBox4.Controls.Add(this.textBox9);
             this.groupBox4.Controls.Add(this.label16);
             this.groupBox4.Controls.Add(this.textBox8);
             this.groupBox4.Controls.Add(this.label15);
@@ -124,10 +132,30 @@
             this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Location = new System.Drawing.Point(7, 258);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(540, 302);
+            this.groupBox4.Size = new System.Drawing.Size(540, 117);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "3.環境変数の設定";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker2.Location = new System.Drawing.Point(303, 83);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(157, 21);
+            this.dateTimePicker2.TabIndex = 22;
+            this.dateTimePicker2.Value = new System.DateTime(2024, 1, 1, 21, 0, 0, 0);
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(120, 83);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(157, 21);
+            this.dateTimePicker1.TabIndex = 21;
+            this.dateTimePicker1.Value = new System.DateTime(2024, 1, 1, 15, 0, 0, 0);
             // 
             // label20
             // 
@@ -156,15 +184,6 @@
             this.label19.TabIndex = 18;
             this.label19.Text = "一曲の平均時間(ロード等含む)";
             // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(187, 54);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(19, 15);
-            this.label18.TabIndex = 17;
-            this.label18.Text = "日";
-            // 
             // label17
             // 
             this.label17.AutoSize = true;
@@ -174,19 +193,10 @@
             this.label17.TabIndex = 16;
             this.label17.Text = "Pt";
             // 
-            // textBox9
-            // 
-            this.textBox9.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox9.Location = new System.Drawing.Point(120, 51);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(62, 21);
-            this.textBox9.TabIndex = 15;
-            this.textBox9.Text = "7";
-            // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(47, 118);
+            this.label16.Location = new System.Drawing.Point(47, 88);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(67, 15);
             this.label16.TabIndex = 14;
@@ -520,7 +530,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button1.Location = new System.Drawing.Point(164, 616);
+            this.button1.Location = new System.Drawing.Point(164, 602);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(221, 36);
             this.button1.TabIndex = 6;
@@ -528,31 +538,121 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // dateTimePicker1
+            // label18
             // 
-            this.dateTimePicker1.CustomFormat = "yyyy/MM/dd HH:mm:ss";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(133, 113);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(157, 21);
-            this.dateTimePicker1.TabIndex = 21;
-            this.dateTimePicker1.Value = new System.DateTime(2024, 1, 1, 15, 0, 0, 0);
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(283, 88);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(14, 15);
+            this.label18.TabIndex = 23;
+            this.label18.Text = "~";
             // 
-            // dateTimePicker2
+            // label22
             // 
-            this.dateTimePicker2.CustomFormat = "yyyy/MM/dd HH:mm:ss";
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker2.Location = new System.Drawing.Point(332, 113);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(157, 21);
-            this.dateTimePicker2.TabIndex = 22;
-            this.dateTimePicker2.Value = new System.DateTime(2024, 1, 1, 21, 0, 0, 0);
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(266, 435);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(13, 15);
+            this.label22.TabIndex = 7;
+            this.label22.Text = "↓";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(164, 453);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(221, 35);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "プレビュー";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(266, 491);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(13, 15);
+            this.label23.TabIndex = 9;
+            this.label23.Text = "↓";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(161, 515);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(91, 15);
+            this.label24.TabIndex = 10;
+            this.label24.Text = "予想総ポイント数";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(291, 515);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(94, 15);
+            this.label25.TabIndex = 11;
+            this.label25.Text = "予想稼働時間/日";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(172, 542);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(43, 15);
+            this.label26.TabIndex = 12;
+            this.label26.Text = "---------";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(221, 542);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(18, 15);
+            this.label27.TabIndex = 13;
+            this.label27.Text = "Pt";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(320, 542);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(15, 15);
+            this.label28.TabIndex = 14;
+            this.label28.Text = "--";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(341, 542);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(31, 15);
+            this.label29.TabIndex = 15;
+            this.label29.Text = "時間";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(266, 572);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(13, 15);
+            this.label30.TabIndex = 16;
+            this.label30.Text = "↓";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 664);
+            this.ClientSize = new System.Drawing.Size(580, 650);
+            this.Controls.Add(this.label30);
+            this.Controls.Add(this.label29);
+            this.Controls.Add(this.label28);
+            this.Controls.Add(this.label27);
+            this.Controls.Add(this.label26);
+            this.Controls.Add(this.label25);
+            this.Controls.Add(this.label24);
+            this.Controls.Add(this.label23);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.label22);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
@@ -609,9 +709,7 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Label label19;
@@ -620,5 +718,16 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
     }
 }

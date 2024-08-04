@@ -283,5 +283,45 @@ namespace event_run_assist_tool
                 comboBox2.Enabled = false;
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int bonus = int.Parse(textBox2.Text) + int.Parse(textBox6.Text) + (10 * (int.Parse(textBox3.Text) + int.Parse(textBox4.Text))) + (int.Parse(textBox5.Text) / 10);
+            int ppt = (int.Parse(textBox8.Text) * magnificate(int.Parse(textBox7.Text)));
+            int frequency = bonus / int.Parse(textBox7.Text);
+            label26.Text = (frequency * ppt).ToString();
+            label28.Text = ((float)((int.Parse(textBox10.Text) * frequency) / (dateTimePicker2.Value - dateTimePicker1.Value).TotalHours)).ToString("F");
+        }
+
+        private int magnificate(int consumption)
+        {
+            switch (consumption)
+            {
+                case 0:
+                    return 1;
+                case 1:
+                    return 5;
+                case 2:
+                    return 10;
+                case 3:
+                    return 15;
+                case 4:
+                    return 19;
+                case 5:
+                    return 23;
+                case 6:
+                    return 26;
+                case 7:
+                    return 29;
+                case 8:
+                    return 31;
+                case 9:
+                    return 33;
+                case 10:
+                    return 35;
+                default:
+                    return 0;
+            }
+        }
     }
 }
