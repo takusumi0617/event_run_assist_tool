@@ -42,16 +42,22 @@ namespace event_run_assist_tool
                     break;
             }
             int bonus = int.Parse(textBox2.Text) + int.Parse(textBox6.Text) + (10 * (int.Parse(textBox3.Text) + int.Parse(textBox4.Text))) + (int.Parse(textBox4.Text) / 10);
+            int ppt = (int.Parse(textBox8.Text) * magnificate(int.Parse(textBox7.Text)));
+            int frequency = bonus / int.Parse(textBox7.Text);
 
             Dictionary<string, string> dic = new Dictionary<string, string>
             {
-                {"goal", textBox1.Text},
-                { "rank", rank.ToString()},
-                { "bonus",  bonus.ToString()},
-                { "speed", textBox7.Text},
-                { "ppp", textBox8.Text},
-                { "days", textBox10.Text},
-                { "tpp", textBox10.Text}
+                { "goal", textBox1.Text}, //目標ポイント数
+                { "rank", rank.ToString()}, //目標順位
+                { "bonus",  bonus.ToString()}, //合計ライボ数
+                { "speed", textBox7.Text}, //焚き数
+                { "pppA", textBox8.Text}, //一回当たりポイント数(0焚き時)
+                { "starttime", dateTimePicker1.Value.ToString()}, //開始日
+                { "endtime", dateTimePicker2.Value.ToString()}, //終了日
+                { "tpp", textBox10.Text}, //一回当たりの時間
+                { "pppB", ppt.ToString()}, //一回当たりポイント数(焚き数反映済み)
+                { "frequency", frequency.ToString()}, //合計ライブ回数
+                { "totalpoint", (ppt * frequency).ToString()} //合計予想ポイント数
             };
 
             SaveFileDialog sfd = new SaveFileDialog();
@@ -290,7 +296,9 @@ namespace event_run_assist_tool
             int ppt = (int.Parse(textBox8.Text) * magnificate(int.Parse(textBox7.Text)));
             int frequency = bonus / int.Parse(textBox7.Text);
             label26.Text = (frequency * ppt).ToString();
-            label28.Text = ((float)((int.Parse(textBox10.Text) * frequency) / (dateTimePicker2.Value - dateTimePicker1.Value).TotalHours)).ToString("F");
+            label28.Text = ((int.Parse(textBox10.Text) * frequency * 24) / ((dateTimePicker2.Value - dateTimePicker1.Value).TotalHours * 60)).ToString("F");
+            label32.Text = textBox1.Text;
+            label35.Text = ((float)(float.Parse(label26.Text) / float.Parse(textBox1.Text) * 100)).ToString("F3");
         }
 
         private int magnificate(int consumption)
@@ -322,6 +330,15 @@ namespace event_run_assist_tool
                 default:
                     return 0;
             }
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            DateTime start = new DateTime(now.Year, now.Month, now.Day, 15, 0, 0);
+            DateTime end = new DateTime(now.Year, now.Month, now.Day + 9, 21, 0, 0);
+            dateTimePicker1.Value = start;
+            dateTimePicker2.Value = end;
         }
     }
 }

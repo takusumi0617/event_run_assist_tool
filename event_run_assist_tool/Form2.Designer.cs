@@ -80,6 +80,12 @@
             this.label28 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -578,7 +584,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(161, 515);
+            this.label24.Location = new System.Drawing.Point(67, 515);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(91, 15);
             this.label24.TabIndex = 10;
@@ -587,7 +593,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(291, 515);
+            this.label25.Location = new System.Drawing.Point(405, 515);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(94, 15);
             this.label25.TabIndex = 11;
@@ -595,17 +601,17 @@
             // 
             // label26
             // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(172, 542);
+            this.label26.Location = new System.Drawing.Point(59, 542);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(43, 15);
+            this.label26.Size = new System.Drawing.Size(75, 15);
             this.label26.TabIndex = 12;
             this.label26.Text = "---------";
+            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(221, 542);
+            this.label27.Location = new System.Drawing.Point(140, 542);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(18, 15);
             this.label27.TabIndex = 13;
@@ -613,17 +619,18 @@
             // 
             // label28
             // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(320, 542);
+            this.label28.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label28.Location = new System.Drawing.Point(406, 542);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(15, 15);
+            this.label28.Size = new System.Drawing.Size(43, 15);
             this.label28.TabIndex = 14;
             this.label28.Text = "--";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(341, 542);
+            this.label29.Location = new System.Drawing.Point(455, 542);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(31, 15);
             this.label29.TabIndex = 15;
@@ -638,11 +645,74 @@
             this.label30.TabIndex = 16;
             this.label30.Text = "↓";
             // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.ForeColor = System.Drawing.Color.Gray;
+            this.label31.Location = new System.Drawing.Point(251, 542);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(18, 15);
+            this.label31.TabIndex = 19;
+            this.label31.Text = "Pt";
+            // 
+            // label32
+            // 
+            this.label32.ForeColor = System.Drawing.Color.Gray;
+            this.label32.Location = new System.Drawing.Point(170, 542);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(75, 15);
+            this.label32.TabIndex = 18;
+            this.label32.Text = "---------";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.ForeColor = System.Drawing.Color.Gray;
+            this.label33.Location = new System.Drawing.Point(180, 515);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(79, 15);
+            this.label33.TabIndex = 17;
+            this.label33.Text = "目標ポイント数";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(363, 542);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(18, 15);
+            this.label34.TabIndex = 22;
+            this.label34.Text = "%";
+            // 
+            // label35
+            // 
+            this.label35.Location = new System.Drawing.Point(282, 542);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(75, 15);
+            this.label35.TabIndex = 21;
+            this.label35.Text = "---------";
+            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(303, 515);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(67, 15);
+            this.label36.TabIndex = 20;
+            this.label36.Text = "目標達成率";
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(580, 650);
+            this.Controls.Add(this.label34);
+            this.Controls.Add(this.label35);
+            this.Controls.Add(this.label36);
+            this.Controls.Add(this.label31);
+            this.Controls.Add(this.label32);
+            this.Controls.Add(this.label33);
             this.Controls.Add(this.label30);
             this.Controls.Add(this.label29);
             this.Controls.Add(this.label28);
@@ -663,6 +733,7 @@
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "イベラン計画作成";
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
@@ -729,5 +800,11 @@
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label36;
     }
 }
