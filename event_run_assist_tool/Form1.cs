@@ -39,5 +39,18 @@ namespace event_run_assist_tool
             }
             initialization.initialize();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "変数データを選択してください";
+            ofd.InitialDirectory = main.directory();
+            ofd.Filter = "変数ファイル(*.json)|*.json|すべてのファイル(*.*)|*.*";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                Form form3 = new Form3(ofd.FileName);
+                form3.ShowDialog();
+            }
+        }
     }
 }
