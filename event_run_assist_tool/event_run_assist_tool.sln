@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "event_run_assist_tool", "event_run_assist_tool.csproj", "{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "erat_setup_tool", "..\erat_setup_tool\erat_setup_tool.vdproj", "{46CAE872-FBFC-49CB-B7E7-159B1F01B508}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,14 @@ Global
 		{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}.Release|x64.Build.0 = Release|Any CPU
 		{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}.Release|x86.ActiveCfg = Release|Any CPU
 		{9F5FA556-7FD2-4868-B7DC-67EFD93E3EFD}.Release|x86.Build.0 = Release|Any CPU
+		{46CAE872-FBFC-49CB-B7E7-159B1F01B508}.Debug|Any CPU.ActiveCfg = Debug
+		{46CAE872-FBFC-49CB-B7E7-159B1F01B508}.Debug|ARM64.ActiveCfg = Debug
+		{46CAE872-FBFC-49CB-B7E7-159B1F01B508}.Debug|x64.ActiveCfg = Debug
+		{46CAE872-FBFC-49CB-B7E7-159B1F01B508}.Debug|x86.ActiveCfg = Debug
+		{46CAE872-FBFC-49CB-B7E7-159B1F01B508}.Release|Any CPU.ActiveCfg = Release
+		{46CAE872-FBFC-49CB-B7E7-159B1F01B508}.Release|ARM64.ActiveCfg = Release
+		{46CAE872-FBFC-49CB-B7E7-159B1F01B508}.Release|x64.ActiveCfg = Release
+		{46CAE872-FBFC-49CB-B7E7-159B1F01B508}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
