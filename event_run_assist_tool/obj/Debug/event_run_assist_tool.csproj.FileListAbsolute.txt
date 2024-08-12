@@ -40,7 +40,6 @@ C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\obj\
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\Microsoft.Data.Sqlite.dll
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\SQLitePCLRaw.core.dll
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\Microsoft.Data.Sqlite.xml
-C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\SQLitePCLRaw.batteries_v2.dll
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\SQLitePCLRaw.provider.dynamic_cdecl.dll
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\EntityFramework.dll
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\EntityFramework.SqlServer.dll
@@ -50,3 +49,5 @@ C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\EntityFramework.xml
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\System.Data.SQLite.xml
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\x64\SQLite.Interop.dll
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\x86\SQLite.Interop.dll

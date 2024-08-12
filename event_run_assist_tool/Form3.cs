@@ -1,7 +1,6 @@
-﻿using SQLitePCL;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
@@ -9,12 +8,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-using System.Xml.Linq;
-using System.Data;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.Linq;
-using System.Reflection.Emit;
 
 namespace event_run_assist_tool
 {
@@ -23,6 +17,7 @@ namespace event_run_assist_tool
         string path;
         int sum = 0;
         int todaysum = 0;
+        int yesterdaysum = 0;
         int rank = -1;
         private SQLiteConnection _connection;
         private TimeZoneInfo timeZoneInfo = TimeZoneInfo.Local;
@@ -65,7 +60,6 @@ namespace event_run_assist_tool
                 label2.Text = Path.GetFileName(path);
                 string datapath = main.directory() + "\\database\\" + Path.GetFileNameWithoutExtension(path) + ".db";
                 string connectionString = $"Data Source={datapath}";
-                Batteries.Init();
                 _connection = new SQLiteConnection(connectionString);
                 _connection.Open();
 
@@ -108,7 +102,16 @@ namespace event_run_assist_tool
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "変数データを選択してください";
+            ofd.InitialDirectory = $"{main.directory()}\\data";
+            ofd.Filter = "変数ファイル(*.json)|*.json|すべてのファイル(*.*)|*.*";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                Form form3 = new Form3(ofd.FileName);
+                Close();
+                form3.Show();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -133,7 +136,7 @@ namespace event_run_assist_tool
 
                 using (SQLiteCommand command = new SQLiteCommand(insertDataQuery, _connection))
                 {
-                    command.Parameters.AddWithValue("@time", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
+                    command.Parameters.AddWithValue("@time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                     command.Parameters.AddWithValue("@type", 1);
                     command.Parameters.AddWithValue("@value", int.Parse(textBox1.Text));
                     command.Parameters.AddWithValue("@sum", lastSum + int.Parse(textBox1.Text));
@@ -146,7 +149,7 @@ namespace event_run_assist_tool
 
                 using (SQLiteCommand command = new SQLiteCommand(insertDataQuery, _connection))
                 {
-                    command.Parameters.AddWithValue("@time", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
+                    command.Parameters.AddWithValue("@time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                     command.Parameters.AddWithValue("@type", 2);
                     command.Parameters.AddWithValue("@value", int.Parse(textBox1.Text));
                     command.Parameters.AddWithValue("@sum", int.Parse(textBox1.Text));
@@ -164,7 +167,7 @@ namespace event_run_assist_tool
 
             using (SQLiteCommand command = new SQLiteCommand(insertDataQuery, _connection))
             {
-                command.Parameters.AddWithValue("@time", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
+                command.Parameters.AddWithValue("@time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 command.Parameters.AddWithValue("@value", int.Parse(textBox2.Text));
                 command.ExecuteNonQuery();
             }
@@ -233,7 +236,6 @@ namespace event_run_assist_tool
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            //残りやること:「本日の総ポイント」の目標値の計算式実装
             TimeSpan starttonow = DateTime.Now - DateTime.Parse(dic["starttime"]);
             string getLastSumQuery = "SELECT sum FROM point ORDER BY id DESC LIMIT 1;";
             using (SQLiteCommand command = new SQLiteCommand(getLastSumQuery, _connection))
@@ -251,30 +253,47 @@ namespace event_run_assist_tool
             label16.Text = (sum / (decimal)starttonow.TotalHours).ToString("F");
             {
                 // 今日の日付の最後のsum値を取得
+                DateTime yesterday = DateTime.Today.ToUniversalTime().AddDays(-1);
                 DateTime today = DateTime.Today.ToUniversalTime();
                 DateTime tomorrow = today.AddDays(1);
                 string query = @"
+                    SELECT sum 
+                    FROM point 
+                    WHERE time >= @yesterday AND time < @today
+                    ORDER BY time DESC
+                    LIMIT 1";
+
+                using (SQLiteCommand command = new SQLiteCommand(query, _connection))
+                {
+                    command.Parameters.AddWithValue("@yesterday", yesterday.ToString("yyyy-MM-dd"));
+                    command.Parameters.AddWithValue("@today", today.ToString("yyyy-MM-dd"));
+                    object result = command.ExecuteScalar();
+
+                    yesterdaysum = Convert.ToInt32(result);
+
+                    string query1 = @"
                     SELECT sum 
                     FROM point 
                     WHERE time >= @today AND time < @tomorrow
                     ORDER BY time DESC
                     LIMIT 1";
 
-                using (SQLiteCommand command = new SQLiteCommand(query, _connection))
-                {
-                    command.Parameters.AddWithValue("@today", today.ToString("yyyy-MM-dd"));
-                    command.Parameters.AddWithValue("@tomorrow", tomorrow.ToString("yyyy-MM-dd"));
-                    object result = command.ExecuteScalar();
+                    using (SQLiteCommand command2 = new SQLiteCommand(query1, _connection))
+                    {
+                        command2.Parameters.AddWithValue("@today", today.ToString("yyyy-MM-dd"));
+                        command2.Parameters.AddWithValue("@tomorrow", tomorrow.ToString("yyyy-MM-dd"));
+                        object result2 = command2.ExecuteScalar();
 
-                    if (result != null)
-                    {
-                        todaysum = Convert.ToInt32(result);
-                        label22.Text = todaysum.ToString();
-                    }
-                    else
-                    {
-                        todaysum = 0;
-                        label22.Text = "0";
+                        if (result2 != null)
+                        {
+                            todaysum = Convert.ToInt32(result2);
+                            label22.Text = (todaysum - yesterdaysum).ToString();
+                        }
+                        else
+                        {
+                            todaysum = 0;
+                            label22.Text = "0";
+                        }
                     }
                 }
             }
@@ -345,8 +364,7 @@ namespace event_run_assist_tool
                 series.Points.AddXY(startTime, 0);
                 while (reader.Read())
                 {
-                    DateTime utcTime = reader.GetDateTime(0);
-                    DateTime localTime = utcTime.ToLocalTime();
+                    DateTime localTime = reader.GetDateTime(0);
                     double sum = reader.GetDouble(1);
                     series.Points.AddXY(localTime, sum);
                 }
@@ -427,23 +445,20 @@ namespace event_run_assist_tool
                     // データをプロット
                     foreach (DataRow row in dataTable.Rows)
                     {
-                        DateTime timeUtc;
+                        DateTime time;
                         int value;
 
-                        if (DateTime.TryParse(row["time"].ToString(), out timeUtc) &&
+                        if (DateTime.TryParse(row["time"].ToString(), out time) &&
                             int.TryParse(row["value"].ToString(), out value))
                         {
-                            // UTCからローカルタイムに変換
-                            DateTime timeLocal = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, timeZoneInfo);
-
                             // 前のデータポイントとの間に空白を作成
-                            if (previousTime.HasValue && (timeLocal - previousTime.Value).TotalDays > 1)
+                            if (previousTime.HasValue && (time - previousTime.Value).TotalDays > 1)
                             {
                                 series.Points.AddXY(previousTime.Value.AddDays(1), double.NaN);
                             }
 
-                            series.Points.AddXY(timeLocal, value);
-                            previousTime = timeLocal;
+                            series.Points.AddXY(time, value);
+                            previousTime = time;
                         }
                     }
 

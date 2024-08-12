@@ -73,7 +73,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>qVUrZscGaqAeZLkBIpvDRBOUyLAnV7CDd0lX/QCEnt8=</dsig:DigestValue>
+        <dsig:DigestValue>1UhB3IOCqCjeULuZqiMAxubeITwwBMBy5kIOT2+Q5Ac=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -102,38 +102,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SQLitePCLRaw.batteries_v2.dll" size="11776">
-      <assemblyIdentity name="SQLitePCLRaw.batteries_v2" version="2.1.6.2060" publicKeyToken="8226EA5DF37BCAE9" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>/4ukj7qMTHWvTSzqFusjbgK4Ee0g+ONufQTHnLmKRd8=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SQLitePCLRaw.core.dll" size="51200">
-      <assemblyIdentity name="SQLitePCLRaw.core" version="2.1.8.2226" publicKeyToken="1488E028CA7AB535" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="SQLitePCLRaw.core" version="2.1.9.2410" publicKeyToken="1488E028CA7AB535" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>/PVEeB8v7dLBKhYEuuqRGF/x/WPs4aFwG8KDOi6Bj88=</dsig:DigestValue>
+        <dsig:DigestValue>nObFsVbf8IIx9x/IPOpeo9IeDbMsvNc2QvD3XspS/Xw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SQLitePCLRaw.provider.dynamic_cdecl.dll" size="66048">
-      <assemblyIdentity name="SQLitePCLRaw.provider.dynamic_cdecl" version="2.1.8.2226" publicKeyToken="B68184102CBA0B3B" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="SQLitePCLRaw.provider.dynamic_cdecl" version="2.1.9.2410" publicKeyToken="B68184102CBA0B3B" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YxzjSFoM6B6DdY51ZlBLuPieRwVU1U6KUk3Ki7FBgy8=</dsig:DigestValue>
+        <dsig:DigestValue>r4bKfU+j2RlkTwqc6/qq2iLnA58fJRggnzFXIUDm9Vc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -275,7 +263,25 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>DXBRzUwvP0rGcWbUHAHRntkQe1jrcn0D5naZRCw80Jc=</dsig:DigestValue>
+      <dsig:DigestValue>PJKHIvSNlruTVE7mdhRvDbVZStpgppQW/4goGejSmVU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="x64\SQLite.Interop.dll" size="1829040">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>q6Z8fmwBhWg4uLxrC6lehk4f3LN1CqfNwbxzURzqb+Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="x86\SQLite.Interop.dll" size="1447600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cOSO9cFHZvNgHJdFG0eFn93L5/I34cUgDOqOenYJ2Ak=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

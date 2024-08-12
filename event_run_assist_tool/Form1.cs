@@ -44,7 +44,7 @@ namespace event_run_assist_tool
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Title = "変数データを選択してください";
-            ofd.InitialDirectory = main.directory();
+            ofd.InitialDirectory = $"{main.directory()}\\data";
             ofd.Filter = "変数ファイル(*.json)|*.json|すべてのファイル(*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
