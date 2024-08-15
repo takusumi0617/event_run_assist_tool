@@ -7,7 +7,7 @@
     <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="event_run_assist_tool.exe.manifest" size="17486">
+    <dependentAssembly dependencyType="install" codebase="event_run_assist_tool.exe.manifest" size="17974">
       <assemblyIdentity name="event_run_assist_tool.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
       <hash>
         <dsig:Transforms>
