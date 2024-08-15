@@ -51,3 +51,10 @@ C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\System.Data.SQLite.xml
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\x64\SQLite.Interop.dll
 C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\x86\SQLite.Interop.dll
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\License\.NET.license
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\License\ef6.license
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\License\runtime.license
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\License\efcore.license
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\License\SQLitePCLRaw.license
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\bin\Debug\License\corefx.license
+C:\Users\takus\Documents\20.git\event_run_assist_tool\event_run_assist_tool\obj\Debug\event_run_assist_tool.license.resources

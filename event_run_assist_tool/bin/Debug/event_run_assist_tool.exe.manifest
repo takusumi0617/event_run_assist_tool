@@ -67,22 +67,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-<<<<<<< Updated upstream
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="event_run_assist_tool.exe" size="50688">
-=======
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="event_run_assist_tool.exe" size="393728">
->>>>>>> Stashed changes
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="event_run_assist_tool.exe" size="53248">
       <assemblyIdentity name="event_run_assist_tool" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< Updated upstream
-        <dsig:DigestValue>1UhB3IOCqCjeULuZqiMAxubeITwwBMBy5kIOT2+Q5Ac=</dsig:DigestValue>
-=======
-        <dsig:DigestValue>U4kqdPzl2ZL2cvuZ96FdIzPHPyngXh+DvLVRMDztn2k=</dsig:DigestValue>
->>>>>>> Stashed changes
+        <dsig:DigestValue>3jWwyejm8+N3NuOSHgN0GVPKoh49EuwcsbgUCah6qcY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
