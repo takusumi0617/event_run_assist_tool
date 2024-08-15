@@ -7,14 +7,18 @@
     <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="event_run_assist_tool.exe.manifest" size="17486">
+    <dependentAssembly dependencyType="install" codebase="event_run_assist_tool.exe.manifest" size="17974">
       <assemblyIdentity name="event_run_assist_tool.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+<<<<<<< Updated upstream
         <dsig:DigestValue>o69a10xzAAsIMkz5N+epLnvKkKPprUi1Uw2XuFCwXfs=</dsig:DigestValue>
+=======
+        <dsig:DigestValue>Kuqx7FwACHD3krmn9FMNn0Fkcz5E3siuTiSaVHLLSl4=</dsig:DigestValue>
+>>>>>>> Stashed changes
       </hash>
     </dependentAssembly>
   </dependency>
