@@ -79,6 +79,7 @@ namespace event_run_assist_tool
             {
                 string jsonString = JsonSerializer.Serialize(dic);
                 File.WriteAllText(sfd.FileName, jsonString, Encoding.GetEncoding("Shift_JIS"));
+                MessageBox.Show("データを正常に保存しました。", "保存完了", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -339,6 +340,14 @@ namespace event_run_assist_tool
             DateTime end = new DateTime(now.Year, now.Month, now.Day + 9, 21, 0, 0);
             dateTimePicker1.Value = start;
             dateTimePicker2.Value = end;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MessageBox.Show("キャンペーン等で付与されるライブボーナスアイテムです。\r\nほとんどが1度の使用で10回復ですが、それ以外のものは「その他」として計上してください。",
+                "ヘルプ:限定ドリンク",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }
