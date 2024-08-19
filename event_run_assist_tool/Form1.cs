@@ -40,18 +40,6 @@ namespace event_run_assist_tool
                 }
             }
             initialization.initialize();
-            
-            var (warningTexts, area) = await warning.GetWarningsAsync();
-            Console.WriteLine($"https://www.jma.go.jp/bosai/warning/#area_type=class20s&area_code={warning.CLASS_AREA_CODE}&lang=ja");
-            Console.WriteLine($"{area}の気象警報・注意報");
-            if (warningTexts.Count > 0)
-            {
-                warningTexts.ForEach(Console.WriteLine);
-            }
-            else
-            {
-                Console.WriteLine("現在発表警報・注意報はありません。");
-            }
         }
 
         private void button2_Click(object sender, EventArgs e)

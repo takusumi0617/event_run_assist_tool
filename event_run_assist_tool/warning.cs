@@ -11,7 +11,7 @@ namespace event_run_assist_tool
 {
     class warning
     {
-        public const string CLASS_AREA_CODE = "1310100"; // 市町村区のコード
+        public const string CLASS_AREA_CODE = "1130100"; // 市町村区のコード
         const string AREA_URL = "https://www.jma.go.jp/bosai/common/const/area.json";
         static string warning_info_url = $"https://www.jma.go.jp/bosai/warning/#area_type=class20s&area_code={CLASS_AREA_CODE}&lang=ja";
         static string url = "https://www.jma.go.jp/bosai/warning/data/warning/{0}.json";

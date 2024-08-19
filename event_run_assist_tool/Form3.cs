@@ -4,11 +4,13 @@ using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
+using System.Reflection.Emit;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Label = System.Windows.Forms.Label;
 
 namespace event_run_assist_tool
 {
@@ -92,6 +94,7 @@ namespace event_run_assist_tool
                 timer2.Enabled = true;
                 timer1_Tick(sender, e);
                 timer2_Tick(sender, e);
+                Warning_GET(true);
             }
             else
             {
@@ -193,6 +196,7 @@ namespace event_run_assist_tool
                     label4.ForeColor = System.Drawing.Color.Red;
                     label4.Font = new Font(label4.Font, FontStyle.Bold);
                 }
+                Warning_GET();
             }
             {
                 DateTime startTime;
@@ -545,6 +549,55 @@ namespace event_run_assist_tool
             }
             timer1.Enabled = false;
             timer2.Enabled = false;
+        }
+
+        private async void Warning_GET(bool force = false)
+        {
+            DateTime Now = DateTime.Now;
+            if ((Now.ToString("HH") == "00" && Now.ToString("mm") == "00" && Now.ToString("ss") == "00")||force)
+            {
+                var (warningTexts, area) = await warning.GetWarningsAsync();
+                label30.Text = area;
+                int labelYPosition = label29.Bottom + 10;
+                if (warningTexts.Count > 0)
+                {
+                    foreach (var text in warningTexts)
+                    {
+                        Label warningLabel = new Label();
+                        warningLabel.Text = text;
+                        warningLabel.AutoSize = true;
+                        warningLabel.Location = new Point(label29.Left, labelYPosition);
+
+                        // 警報・注意報の種類に応じた色の設定
+                        if (text.Contains("特別警報"))
+                        {
+                            warningLabel.BackColor = Color.Purple;
+                            warningLabel.ForeColor = Color.White;
+                        }
+                        else if (text.Contains("警報"))
+                        {
+                            warningLabel.BackColor = Color.Red;
+                            warningLabel.ForeColor = Color.White;
+                        }
+                        else if (text.Contains("注意報"))
+                        {
+                            warningLabel.BackColor = Color.Yellow;
+                            warningLabel.ForeColor = Color.Black;
+                        }
+                        panel2.Controls.Add(warningLabel);
+                        labelYPosition += warningLabel.Height + 5; // 次のラベルのY位置を更新
+                    }
+                }
+                else
+                {
+                    Label noWarningLabel = new Label();
+                    noWarningLabel.Text = "現在発表されている警報・注意報はありません。";
+                    noWarningLabel.AutoSize = true;
+                    noWarningLabel.Location = new Point(label29.Left, labelYPosition);
+                    panel2.Controls.Add(noWarningLabel);
+                }
+                Console.WriteLine("DONE");
+            }
         }
     }
 }
