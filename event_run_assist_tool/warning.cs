@@ -19,9 +19,7 @@ namespace event_run_assist_tool
             {
                 // コードと名称の取得
                 string warningInfoHtml = await client.GetStringAsync(warning_info_url);
-                HtmlDocument warningsDoc = new HtmlDocument();
-                warningsDoc.LoadHtml(warningInfoHtml);
-                var warningsContents = warningsDoc.DocumentNode.SelectNodes("//script")[10].InnerText;
+                var warningsContents = GetWarningsScriptContent(warningInfoHtml);
                 var warningsTextList = warningsContents.Split(new[] { "}," }, StringSplitOptions.None);
 
                 Dictionary<string, string> transWarning = new Dictionary<string, string>();
@@ -52,40 +50,39 @@ namespace event_run_assist_tool
 
                 // 情報の取得
                 string areaDataJson = await client.GetStringAsync(AREA_URL);
-                dynamic areaData = JsonConvert.DeserializeObject(areaDataJson);
-                string area = areaData["class20s"][CLASS_AREA_CODE]["name"];
-                string class15sAreaCode = areaData["class20s"][CLASS_AREA_CODE]["parent"];
-                string class10sAreaCode = areaData["class15s"][class15sAreaCode]["parent"];
-                string officesAreaCode = areaData["class10s"][class10sAreaCode]["parent"];
+                JsonDocument areaData = JsonDocument.Parse(areaDataJson);
+                string area = areaData.RootElement.GetProperty("class20s").GetProperty(CLASS_AREA_CODE).GetProperty("name").GetString();
+                string class15sAreaCode = areaData.RootElement.GetProperty("class20s").GetProperty(CLASS_AREA_CODE).GetProperty("parent").GetString();
+                string class10sAreaCode = areaData.RootElement.GetProperty("class15s").GetProperty(class15sAreaCode).GetProperty("parent").GetString();
+                string officesAreaCode = areaData.RootElement.GetProperty("class10s").GetProperty(class10sAreaCode).GetProperty("parent").GetString();
                 string warningInfoJson = await client.GetStringAsync(string.Format(url, officesAreaCode));
-                dynamic warningInfo = JsonConvert.DeserializeObject(warningInfoJson);
+                JsonDocument warningInfo = JsonDocument.Parse(warningInfoJson);
 
                 List<string> warningCodes = new List<string>();
-                foreach (var classArea in warningInfo["areaTypes"][1]["areas"])
+                foreach (var classArea in warningInfo.RootElement.GetProperty("areaTypes")[1].GetProperty("areas").EnumerateArray())
                 {
-                    if (classArea["code"] == CLASS_AREA_CODE)
+                    if (classArea.GetProperty("code").GetString() == CLASS_AREA_CODE)
                     {
-                        foreach (var warning in classArea["warnings"])
+                        foreach (var warning in classArea.GetProperty("warnings").EnumerateArray())
                         {
-                            if (warning["status"] != "解除" && warning["status"] != "発表警報・注意報はなし")
+                            if (warning.GetProperty("status").GetString() != "解除" && warning.GetProperty("status").GetString() != "発表警報・注意報はなし")
                             {
-                                warningCodes.Add((string)warning["code"]);
+                                warningCodes.Add(warning.GetProperty("code").GetString());
                             }
                         }
                     }
                 }
 
-                List<string> warningTexts = new List<string>();
-                foreach (string code in warningCodes)
-                {
-                    if (transWarning.ContainsKey(code))
-                    {
-                        warningTexts.Add(transWarning[code]);
-                    }
-                }
-
+                List<string> warningTexts = warningCodes.Select(code => transWarning.ContainsKey(code) ? transWarning[code] : "").ToList();
                 return (warningTexts, area);
             }
+        }
+
+        static string GetWarningsScriptContent(string html)
+        {
+            string pattern = @"<script.*?>.*?</script>";
+            var matches = Regex.Matches(html, pattern, RegexOptions.Singleline);
+            return matches.Count > 10 ? matches[10].Value : string.Empty;
         }
     }
 }
