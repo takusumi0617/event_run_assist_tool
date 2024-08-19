@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace event_run_assist_tool
 {
     class warning
     {
-        const string CLASS_AREA_CODE = "1310100"; // 市町村区のコード
+        public const string CLASS_AREA_CODE = "1310100"; // 市町村区のコード
         const string AREA_URL = "https://www.jma.go.jp/bosai/common/const/area.json";
         static string warning_info_url = $"https://www.jma.go.jp/bosai/warning/#area_type=class20s&area_code={CLASS_AREA_CODE}&lang=ja";
         static string url = "https://www.jma.go.jp/bosai/warning/data/warning/{0}.json";
 
-        static async Task<(List<string> warningTexts, string area)> GetWarningsAsync()
+        public static async Task<(List<string> warningTexts, string area)> GetWarningsAsync()
         {
             using (HttpClient client = new HttpClient())
             {
