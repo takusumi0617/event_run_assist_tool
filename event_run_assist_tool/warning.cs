@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -11,10 +13,38 @@ namespace event_run_assist_tool
 {
     class warning
     {
-        public const string CLASS_AREA_CODE = "1130100"; // 市町村区のコード
-        const string AREA_URL = "https://www.jma.go.jp/bosai/common/const/area.json";
-        static string warning_info_url = $"https://www.jma.go.jp/bosai/warning/#area_type=class20s&area_code={CLASS_AREA_CODE}&lang=ja";
-        static string url = "https://www.jma.go.jp/bosai/warning/data/warning/{0}.json";
+        public static string CLASS_AREA_CODE()
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\erat"))
+            {
+                if (key == null)
+                {
+                    using (RegistryKey key1 = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\erat"))
+                    {
+                        // キーに値を設定
+                        key1.SetValue("area", "1310100");
+                        return "1310100";
+                    }
+                }
+                // キーの値を読み込む
+                object value = key.GetValue("area");
+                if (value == null)
+                {
+                    using (RegistryKey key1 = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\erat"))
+                    {
+                        key1.SetValue("area", "1310100");
+                        return "1310100";
+                    }
+                }
+                else
+                {
+                    return $"{value}";
+                }
+            }
+        }
+        public const string AREA_URL = "https://www.jma.go.jp/bosai/common/const/area.json";
+        public static string warning_info_url = $"https://www.jma.go.jp/bosai/warning/#area_type=class20s&area_code={warning.CLASS_AREA_CODE()}&lang=ja";
+        public static string url = "https://www.jma.go.jp/bosai/warning/data/warning/{0}.json";
 
         public static async Task<(List<string> warningTexts, string area)> GetWarningsAsync()
         {
@@ -50,12 +80,22 @@ namespace event_run_assist_tool
                         transWarning[warningCode] = Regex.Unescape(warningText);
                     }
                 }
-
+                string local_area_path = main.directory() + "\\temp\\area.json";
+                if (!File.Exists(local_area_path) || (DateTime.Now - File.GetLastWriteTime(local_area_path)).TotalDays > 7)
+                {
+                     HttpResponseMessage response = await client.GetAsync(warning.AREA_URL);
+                     response.EnsureSuccessStatusCode();
+                     using (FileStream fileStream = new FileStream(local_area_path, FileMode.Create, FileAccess.Write, FileShare.None))
+                     {
+                         await response.Content.CopyToAsync(fileStream);
+                     }
+                     Console.WriteLine("DONE");
+                }
                 // 情報の取得
-                string areaDataJson = await client.GetStringAsync(AREA_URL);
+                string areaDataJson = File.ReadAllText(local_area_path);
                 JsonDocument areaData = JsonDocument.Parse(areaDataJson);
-                string area = areaData.RootElement.GetProperty("class20s").GetProperty(CLASS_AREA_CODE).GetProperty("name").GetString();
-                string class15sAreaCode = areaData.RootElement.GetProperty("class20s").GetProperty(CLASS_AREA_CODE).GetProperty("parent").GetString();
+                string area = areaData.RootElement.GetProperty("class20s").GetProperty(CLASS_AREA_CODE()).GetProperty("name").GetString();
+                string class15sAreaCode = areaData.RootElement.GetProperty("class20s").GetProperty(CLASS_AREA_CODE()).GetProperty("parent").GetString();
                 string class10sAreaCode = areaData.RootElement.GetProperty("class15s").GetProperty(class15sAreaCode).GetProperty("parent").GetString();
                 string officesAreaCode = areaData.RootElement.GetProperty("class10s").GetProperty(class10sAreaCode).GetProperty("parent").GetString();
                 string warningInfoJson = await client.GetStringAsync(string.Format(url, officesAreaCode));
@@ -64,7 +104,7 @@ namespace event_run_assist_tool
                 List<string> warningCodes = new List<string>();
                 foreach (var classArea in warningInfo.RootElement.GetProperty("areaTypes")[1].GetProperty("areas").EnumerateArray())
                 {
-                    if (classArea.GetProperty("code").GetString() == CLASS_AREA_CODE)
+                    if (classArea.GetProperty("code").GetString() == CLASS_AREA_CODE())
                     {
                         foreach (var warning in classArea.GetProperty("warnings").EnumerateArray())
                         {

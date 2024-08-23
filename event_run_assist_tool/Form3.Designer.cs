@@ -82,6 +82,7 @@
             this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.label31 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -568,6 +569,7 @@
             this.panel2.AutoScroll = true;
             this.panel2.AutoScrollMinSize = new System.Drawing.Size(0, 84);
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label31);
             this.panel2.Controls.Add(this.label30);
             this.panel2.Controls.Add(this.label29);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -579,7 +581,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(272, 17);
+            this.label30.Location = new System.Drawing.Point(272, 26);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(40, 17);
             this.label30.TabIndex = 36;
@@ -613,6 +615,15 @@
             this.splitContainer2.Size = new System.Drawing.Size(425, 512);
             this.splitContainer2.SplitterDistance = 102;
             this.splitContainer2.TabIndex = 40;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(272, 9);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(152, 17);
+            this.label31.TabIndex = 37;
+            this.label31.Text = "気象庁ホームページを利用";
             // 
             // Form3
             // 
@@ -708,5 +719,6 @@
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Label label31;
     }
 }

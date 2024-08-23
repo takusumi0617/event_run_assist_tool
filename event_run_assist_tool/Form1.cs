@@ -19,7 +19,7 @@ namespace event_run_assist_tool
             form2.ShowDialog();
         }
 
-        private async void Form1_Load(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
             // レジストリキーを開く
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\erat"))
@@ -64,6 +64,12 @@ namespace event_run_assist_tool
         {
             Form license = new license();
             license.ShowDialog();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form form4 = new Form4();
+            form4.ShowDialog();
         }
     }
 }
