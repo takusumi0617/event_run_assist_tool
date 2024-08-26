@@ -11,9 +11,9 @@ namespace event_run_assist_tool
     {
         public static void initialize()
         {
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat");
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat\\data");
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\erat\\database");
+            Directory.CreateDirectory(main.directory() + "\\erat");
+            Directory.CreateDirectory(main.directory() + "\\erat\\data");
+            Directory.CreateDirectory(main.directory() + "\\erat\\database");
         }
     }
 }
