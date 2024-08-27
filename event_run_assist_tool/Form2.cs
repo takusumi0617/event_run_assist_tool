@@ -62,16 +62,10 @@ namespace event_run_assist_tool
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.FileName = "event_run_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".json";
-            //はじめに表示されるフォルダを指定する
             sfd.InitialDirectory = main.directory() + @"\data";
-            //[ファイルの種類]に表示される選択肢を指定する
             sfd.Filter = "JSONファイル(*.json)|*.json|すべてのファイル(*.*)|*.*";
-            //[ファイルの種類]ではじめに選択されるものを指定する
-            //1番目の「JSONファイル」が選択されているようにする
             sfd.FilterIndex = 1;
-            //タイトルを設定する
             sfd.Title = "保存先のファイルを選択してください";
-            //ダイアログボックスを閉じる前に現在のディレクトリを復元するようにする
             sfd.RestoreDirectory = true;
 
             //ダイアログを表示する
@@ -337,7 +331,7 @@ namespace event_run_assist_tool
         {
             DateTime now = DateTime.Now;
             DateTime start = new DateTime(now.Year, now.Month, now.Day, 15, 0, 0);
-            DateTime end = new DateTime(now.Year, now.Month, now.Day + 9, 21, 0, 0);
+            DateTime end = new DateTime(now.AddDays(9).Year, now.AddDays(9).Month, now.AddDays(9).Day, 21, 0, 0);
             dateTimePicker1.Value = start;
             dateTimePicker2.Value = end;
         }
