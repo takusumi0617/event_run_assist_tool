@@ -1,5 +1,7 @@
 .vs
 /event_run_assist_tool/bin
 /event_run_assist_tool/obj
+/erat_mobile_tool/bin
+/erat_mobile_tool/obj
 /erat_setup_tool
 /erat_image_recognition_tool
