@@ -62,16 +62,10 @@ namespace event_run_assist_tool
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.FileName = "event_run_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".json";
-            //はじめに表示されるフォルダを指定する
             sfd.InitialDirectory = main.directory() + @"\data";
-            //[ファイルの種類]に表示される選択肢を指定する
             sfd.Filter = "JSONファイル(*.json)|*.json|すべてのファイル(*.*)|*.*";
-            //[ファイルの種類]ではじめに選択されるものを指定する
-            //1番目の「JSONファイル」が選択されているようにする
             sfd.FilterIndex = 1;
-            //タイトルを設定する
             sfd.Title = "保存先のファイルを選択してください";
-            //ダイアログボックスを閉じる前に現在のディレクトリを復元するようにする
             sfd.RestoreDirectory = true;
 
             //ダイアログを表示する
@@ -79,6 +73,7 @@ namespace event_run_assist_tool
             {
                 string jsonString = JsonSerializer.Serialize(dic);
                 File.WriteAllText(sfd.FileName, jsonString, Encoding.GetEncoding("Shift_JIS"));
+                MessageBox.Show("データを正常に保存しました。", "保存完了", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -314,11 +309,11 @@ namespace event_run_assist_tool
                 case 3:
                     return 15;
                 case 4:
-                    return 19;
+                    return 20;
                 case 5:
-                    return 23;
+                    return 25;
                 case 6:
-                    return 26;
+                    return 27;
                 case 7:
                     return 29;
                 case 8:
@@ -336,9 +331,17 @@ namespace event_run_assist_tool
         {
             DateTime now = DateTime.Now;
             DateTime start = new DateTime(now.Year, now.Month, now.Day, 15, 0, 0);
-            DateTime end = new DateTime(now.Year, now.Month, now.Day + 9, 21, 0, 0);
+            DateTime end = new DateTime(now.AddDays(9).Year, now.AddDays(9).Month, now.AddDays(9).Day, 21, 0, 0);
             dateTimePicker1.Value = start;
             dateTimePicker2.Value = end;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MessageBox.Show("キャンペーン等で付与されるライブボーナスアイテムです。\r\nほとんどが1度の使用で10回復ですが、それ以外のものは「その他」として計上してください。",
+                "ヘルプ:限定ドリンク",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }

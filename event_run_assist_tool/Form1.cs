@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace event_run_assist_tool
@@ -62,6 +64,12 @@ namespace event_run_assist_tool
         {
             Form license = new license();
             license.ShowDialog();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form form4 = new Form4();
+            form4.ShowDialog();
         }
     }
 }
