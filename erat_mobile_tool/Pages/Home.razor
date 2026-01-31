@@ -1,7 +1,248 @@
 ﻿@page "/"
+@using erat_mobile_tool.Services
+@using erat_mobile_tool.Models
+@inject AppState State
+@inject IJSRuntime JS
 
-<PageTitle>Home</PageTitle>
+<style>
+    /* 進捗度（Progress）専用の発光エフェクト */
+    .glow-progress {
+        color: #00FFF2;
+        text-shadow: 0 0 8px rgba(0, 255, 242, 0.8), 0 0 15px rgba(0, 255, 242, 0.4);
+    }
 
-<h1>Hello, world!</h1>
+    /* その他のカラー定義（発光なし） */
+    .text-cyan {
+        color: #00FFF2;
+    }
 
-Welcome to your new app.
+    .text-yellow {
+        color: #FFD700;
+    }
+
+    .text-magenta {
+        color: #FF00FF;
+    }
+
+    .text-red {
+        color: #FF4D4D;
+    }
+
+    .text-white {
+        color: #FFFFFF;
+    }
+
+    .text-muted-white {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* カードの枠線設定 */
+    .neon-border-info {
+        border: 1px solid #00FFF2 !important;
+    }
+
+    .neon-border-danger {
+        border: 1px solid #FF4D4D !important;
+        background: rgba(255, 77, 77, 0.05) !important;
+    }
+</style>
+
+<div class="container-fluid mt-2 pb-5" style="max-width: 1400px;">
+    @* --- ヘッダー --- *@
+    <div class="px-3 py-2 mb-3 rounded bg-dark border-bottom border-info border-2 d-flex justify-content-between align-items-center shadow neon-border-info">
+        <div>
+            <h5 class="text-cyan fw-bold mb-0">@State.Config.EventName</h5>
+            <span class="text-secondary small">@State.Config.StartTime.ToString("MM/dd HH:mm") ～ @State.Config.EndTime.ToString("MM/dd HH:mm")</span>
+        </div>
+        <div class="btn-group shadow-sm">
+            <button class="btn btn-sm @(isFocusMode ? "btn-outline-info" : "btn-info text-dark fw-bold")" @onclick="() => SetFocusMode(false)">全景</button>
+            <button class="btn btn-sm @(isFocusMode ? "btn-info text-dark fw-bold" : "btn-outline-info")" @onclick="() => SetFocusMode(true)">フォーカス</button>
+        </div>
+    </div>
+
+    @* --- 統合KPIカード --- *@
+    <div class="card bg-dark border-secondary shadow-lg mb-3 overflow-hidden">
+        <div class="card-body p-0 text-center">
+            <div class="row g-0">
+                @* 1. 進捗度（ここだけ光る） *@
+                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
+                    <div class="small fw-bold text-uppercase text-info" style="font-size: 0.65rem;">Progress</div>
+                    <div class="h4 fw-bold mb-0 glow-progress">@ProgressPercent.ToString("F1")<small class="h6">%</small></div>
+                </div>
+
+                @* 2. 現在ポイント *@
+                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
+                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">Current</div>
+                    <div class="h4 fw-bold mb-0 text-white">@CurrentPoints.ToString("N0")</div>
+                </div>
+
+                @* 3. 目標ポイント *@
+                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
+                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">Target</div>
+                    <div class="h4 fw-bold mb-0 text-muted-white">@State.Config.GoalPoints.ToString("N0")</div>
+                </div>
+
+                @* 4. 残り時間 *@
+                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
+                    <div class="text-warning small fw-bold text-uppercase" style="font-size: 0.65rem;">Remaining</div>
+                    <div class="h4 fw-bold mb-0 font-monospace text-yellow">
+                        @($"{TimeRemaining.Days}d {TimeRemaining.Hours:D2}:{TimeRemaining.Minutes:D2}:{TimeRemaining.Seconds:D2}")
+                    </div>
+                </div>
+
+                @* 5. 現在時速 *@
+                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
+                    <div class="text-info small fw-bold text-uppercase" style="font-size: 0.65rem;">Current Rate</div>
+                    <div class="h4 fw-bold mb-0 text-cyan">@CurrentHourlyRate.ToString("N0")</div>
+                </div>
+
+                @* 6. 必要時速 *@
+                <div class="col-6 col-md-4 col-lg-2 border-bottom border-secondary p-2 @(CurrentHourlyRate < RequiredHourlyRate && CurrentPoints < State.Config.GoalPoints ? "neon-border-danger" : "")">
+                    <div class="small fw-bold text-uppercase @(CurrentHourlyRate < RequiredHourlyRate ? "text-red" : "text-secondary")" style="font-size: 0.65rem;">Required</div>
+                    <div class="h4 fw-bold mb-0 @(CurrentHourlyRate < RequiredHourlyRate ? "text-red" : "text-muted-white")">@RequiredHourlyRate.ToString("N0")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* --- 入力とグラフ --- *@
+    <div class="row g-3">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary shadow-sm">
+                <div class="card-body p-2">
+                    <div class="input-group">
+                        <input type="number" class="form-control bg-dark text-white border-secondary"
+                               placeholder="現在ポイントを入力してEnter"
+                               @bind="inputVal"
+                               @bind:event="oninput"
+                               @onkeyup="HandleKeyUp" />
+                        <button class="btn btn-info fw-bold px-4 text-dark" @onclick="RecordPoint">記録</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div id="chartWrapper" class="card bg-dark border-secondary shadow-sm transition-all" style="transition: all 0.5s ease; border-width: 2px;">
+                <div class="card-body p-1">
+                    <div style="height: 400px; width: 100%; position: relative;">
+                        <canvas id="runChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private long inputVal;
+    private bool isFocusMode = false;
+    private long CurrentPoints => State.Logs.LastOrDefault()?.Value ?? 0;
+    private double ProgressPercent => State.Config.GoalPoints > 0 ? Math.Min(100, (double)CurrentPoints / State.Config.GoalPoints * 100) : 0;
+
+    private long CurrentHourlyRate
+    {
+        get
+        {
+            if (State.Logs.Count < 2) return 0;
+            var last = State.Logs[^1];
+            var prev = State.Logs[^2];
+            var hourDiff = (last.Timestamp - prev.Timestamp).TotalHours;
+            return hourDiff > 0.001 ? (long)((last.Value - prev.Value) / hourDiff) : 0;
+        }
+    }
+
+    private long RequiredHourlyRate
+    {
+        get
+        {
+            var now = DateTime.Now;
+            double hours = (now < State.Config.StartTime) ? (State.Config.EndTime - State.Config.StartTime).TotalHours : (State.Config.EndTime - now).TotalHours;
+            if (hours <= 0) return 0;
+            long remaining = State.Config.GoalPoints - CurrentPoints;
+            return remaining > 0 ? (long)(remaining / hours) : 0;
+        }
+    }
+
+    private TimeSpan TimeRemaining
+    {
+        get
+        {
+            var now = DateTime.Now;
+            if (now < State.Config.StartTime) return State.Config.EndTime - State.Config.StartTime;
+            if (now < State.Config.EndTime) return State.Config.EndTime - now;
+            return TimeSpan.Zero;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await State.LoadConfigAsync();
+        inputVal = CurrentPoints;
+        _ = UpdateTimer();
+    }
+
+    private async Task SetFocusMode(bool focus)
+    {
+        isFocusMode = focus;
+        await UpdateChart();
+    }
+
+    private async Task HandleKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") await RecordPoint();
+    }
+
+    private async Task UpdateTimer()
+    {
+        var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        while (await timer.WaitForNextTickAsync()) StateHasChanged();
+    }
+
+    private async Task RecordPoint()
+    {
+        if (inputVal < 0) return;
+        State.Logs.Add(new PointLog { Timestamp = DateTime.Now, Value = inputVal });
+        await State.SaveLogsAsync();
+        await UpdateChart();
+    }
+
+    private async Task UpdateChart()
+    {
+        var actual = State.Logs.Select(l => new { x = ((DateTimeOffset)l.Timestamp).ToUnixTimeMilliseconds(), y = l.Value }).ToArray();
+        var ideal = new[] {
+            new { x = ((DateTimeOffset)State.Config.StartTime).ToUnixTimeMilliseconds(), y = 0L },
+            new { x = ((DateTimeOffset)State.Config.EndTime).ToUnixTimeMilliseconds(), y = State.Config.GoalPoints }
+        };
+        var lastLog = State.Logs.LastOrDefault();
+        var reqStart = lastLog != null ? lastLog.Timestamp : (DateTime.Now > State.Config.StartTime ? DateTime.Now : State.Config.StartTime);
+        var required = new[] {
+            new { x = ((DateTimeOffset)reqStart).ToUnixTimeMilliseconds(), y = CurrentPoints },
+            new { x = ((DateTimeOffset)State.Config.EndTime).ToUnixTimeMilliseconds(), y = State.Config.GoalPoints }
+        };
+
+        object limits;
+        if (isFocusMode)
+        {
+            var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            var windowX = 3 * 60 * 60 * 1000;
+            var windowY = Math.Max(100000, RequiredHourlyRate * 2);
+            limits = new { isFocus = true, minX = now - windowX, maxX = now + windowX, minY = CurrentPoints - windowY, maxY = CurrentPoints + windowY };
+        }
+        else
+        {
+            limits = new { isFocus = false, minX = ((DateTimeOffset)State.Config.StartTime).ToUnixTimeMilliseconds(), maxX = ((DateTimeOffset)State.Config.EndTime).ToUnixTimeMilliseconds(), minY = 0, maxY = State.Config.GoalPoints };
+        }
+
+        await JS.InvokeVoidAsync("renderEratChart", actual, ideal, required, ProgressPercent, limits);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(100);
+            await UpdateChart();
+        }
+    }
+}

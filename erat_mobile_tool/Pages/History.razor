@@ -1,0 +1,119 @@
+﻿@page "/history"
+@using erat_mobile_tool.Services
+@using erat_mobile_tool.Models
+@inject AppState State
+@inject IJSRuntime JS
+
+<div class="container mt-3 pb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-info pb-2">
+        <h2 class="text-info fw-bold mb-0">ポイント記録履歴</h2>
+        <a href="/" class="btn btn-outline-info btn-sm">ダッシュボードへ戻る</a>
+    </div>
+
+    @if (State.Logs == null || !State.Logs.Any())
+    {
+        <div class="text-center p-5 text-secondary bg-dark rounded shadow-sm">
+            記録されたデータがありません。
+        </div>
+    }
+    else
+    {
+        @foreach (var (log, index) in State.Logs.AsEnumerable().Reverse().Select((l, i) => (l, i)))
+        {
+            <div class="card bg-dark border-secondary mb-2 shadow-sm">
+                <div class="card-body py-2 px-3">
+                    @if (editingIndex == index)
+                    {
+                        <div class="row g-2 align-items-center">
+                            <div class="col-md-4">
+                                <input type="datetime-local" class="form-control form-control-sm bg-secondary text-white border-0"
+                                       @bind="editTime" />
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                    <input type="number" class="form-control bg-secondary text-white border-0"
+                                           @bind="editValue" />
+                                    <span class="input-group-text bg-secondary text-white border-0">pt</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <button class="btn btn-success btn-sm me-1" @onclick="() => SaveEdit(index)">保存</button>
+                                <button class="btn btn-outline-secondary btn-sm" @onclick="CancelEdit">取消</button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row align-items-center">
+                            <div class="col-5 col-md-4">
+                                <span class="text-secondary small d-block d-md-inline">@log.Timestamp.ToString("yyyy/MM/dd")</span>
+                                <span class="text-light font-monospace">@log.Timestamp.ToString("HH:mm:ss")</span>
+                            </div>
+                            <div class="col-4 col-md-3">
+                                <span class="text-info fw-bold">@log.Value.ToString("N0")</span> <span class="small text-secondary">pt</span>
+                            </div>
+                            <div class="col-3 col-md-5 text-end">
+                                <button class="btn btn-sm btn-outline-secondary border-0 me-2" @onclick="() => EnterEditMode(index, log)">
+                                    <i class="oi oi-pencil"></i> 編集
+                                </button>
+                                @* 削除ボタンを塗りつぶしの赤 (btn-danger) に変更 *@
+                                <button class="btn btn-sm btn-danger shadow-sm px-3" @onclick="() => DeleteLog(index, log)">
+                                    <i class="oi oi-trash"></i> 削除
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private int editingIndex = -1;
+    private DateTime editTime;
+    private long editValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await State.LoadConfigAsync();
+    }
+
+    private void EnterEditMode(int index, PointLog log)
+    {
+        editingIndex = index;
+        editTime = log.Timestamp;
+        editValue = log.Value;
+    }
+
+    private void CancelEdit()
+    {
+        editingIndex = -1;
+    }
+
+    private async Task SaveEdit(int displayIndex)
+    {
+        int actualIndex = State.Logs.Count - 1 - displayIndex;
+
+        if (actualIndex >= 0 && actualIndex < State.Logs.Count)
+        {
+            State.Logs[actualIndex].Timestamp = editTime;
+            State.Logs[actualIndex].Value = editValue;
+            State.Logs = State.Logs.OrderBy(l => l.Timestamp).ToList();
+            await State.SaveLogsAsync();
+            editingIndex = -1;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeleteLog(int displayIndex, PointLog log)
+    {
+        if (await JS.InvokeAsync<bool>("confirm", $"{log.Timestamp:HH:mm} の記録を削除しますか？"))
+        {
+            int actualIndex = State.Logs.Count - 1 - displayIndex;
+            State.Logs.RemoveAt(actualIndex);
+            await State.SaveLogsAsync();
+            StateHasChanged();
+        }
+    }
+}

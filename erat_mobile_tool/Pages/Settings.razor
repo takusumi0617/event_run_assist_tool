@@ -1,0 +1,156 @@
+﻿@page "/settings"
+@using erat_mobile_tool.Services
+@using erat_mobile_tool.Models
+@using System.Text.Json
+@inject AppState State
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<div class="container mt-3 text-light pb-5" style="max-width: 800px;">
+    @* --- イベント設定セクション --- *@
+    <div class="card bg-dark border-secondary p-4 shadow mb-4">
+        <h3 class="text-info mb-4 border-bottom border-info pb-2">イベントラン設定</h3>
+
+        <div class="mb-3">
+            <label class="form-label text-secondary small">イベント名</label>
+            <input type="text" class="form-control bg-secondary text-white border-0" @bind="State.Config.EventName" />
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label text-secondary small">開始日時</label>
+                <input type="datetime-local" class="form-control bg-secondary text-white border-0" @bind="State.Config.StartTime" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label text-secondary small">終了日時</label>
+                <input type="datetime-local" class="form-control bg-secondary text-white border-0" @bind="State.Config.EndTime" />
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label text-secondary small">目標ポイント</label>
+            <input type="number" class="form-control bg-secondary text-white border-0" @bind="State.Config.GoalPoints" />
+        </div>
+
+        <div class="d-grid gap-2">
+            <button class="btn btn-info fw-bold py-2 shadow-sm" @onclick="SaveAndBack">
+                設定を保存して戻る
+            </button>
+        </div>
+    </div>
+
+    @* --- データ管理セクション --- *@
+    <div class="card bg-dark border-secondary p-4 shadow">
+        <h4 class="text-white mb-3 border-bottom border-secondary pb-2">データ管理</h4>
+
+        <div class="row g-3">
+            @* エクスポート *@
+            <div class="col-md-6">
+                <div class="p-3 border border-secondary rounded bg-dark h-100">
+                    <h6 class="text-info">バックアップ</h6>
+                    <p class="small text-secondary">現在の設定と全記録をJSON形式で保存します。</p>
+                    <button class="btn btn-outline-info w-100" @onclick="ExportData">
+                        エクスポート
+                    </button>
+                </div>
+            </div>
+
+            @* インポート *@
+            <div class="col-md-6">
+                <div class="p-3 border border-info rounded bg-dark h-100">
+                    <h6 class="text-info">データ復元</h6>
+                    <p class="small text-secondary">バックアップファイルを読み込んで上書きします。</p>
+                    <div class="position-relative">
+                        <button class="btn btn-info w-100 fw-bold">ファイルを選択</button>
+                        @* 透明なInputFileを重ねてボタン化 *@
+                        <InputFile OnChange="ImportData" class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" />
+                    </div>
+                </div>
+            </div>
+
+            @* リセット *@
+            <div class="col-12">
+                <div class="p-3 border border-danger rounded bg-dark">
+                    <h6 class="text-danger">データリセット</h6>
+                    <p class="small text-secondary mb-2">ポイント記録をすべて消去します。設定は維持されます。</p>
+                    <button class="btn btn-outline-danger btn-sm" @onclick="ClearLogs">
+                        記録のみリセット
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await State.LoadConfigAsync();
+    }
+
+    private async Task SaveAndBack()
+    {
+        await State.SaveConfigAsync();
+        Nav.NavigateTo("/");
+    }
+
+    private async Task ExportData()
+    {
+        var exportPackage = new
+        {
+            App = "erat_mobile_tool",
+            ExportDate = DateTime.Now,
+            Config = State.Config,
+            Logs = State.Logs
+        };
+        var json = JsonSerializer.Serialize(exportPackage, new JsonSerializerOptions { WriteIndented = true });
+        var fileName = $"erat_backup_{State.Config.EventName}_{DateTime.Now:yyyyMMdd}.json";
+        await JS.InvokeVoidAsync("downloadFile", fileName, json);
+    }
+
+    private async Task ImportData(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var file = e.File;
+            using var stream = file.OpenReadStream();
+            using var reader = new System.IO.StreamReader(stream);
+            var json = await reader.ReadToEndAsync();
+
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            // 簡易的な形式チェック
+            if (!root.TryGetProperty("App", out var appName) || appName.GetString() != "erat_mobile_tool")
+            {
+                await JS.InvokeVoidAsync("alert", "無効なファイル形式です。");
+                return;
+            }
+
+            bool confirmed = await JS.InvokeAsync<bool>("confirm", "データをインポートしますか？現在の記録は上書きされます。");
+            if (confirmed)
+            {
+                // データの復元
+                State.Config = JsonSerializer.Deserialize<EventConfig>(root.GetProperty("Config").GetRawText()) ?? new();
+                State.Logs = JsonSerializer.Deserialize<List<PointLog>>(root.GetProperty("Logs").GetRawText()) ?? new();
+
+                await State.SaveAllAsync();
+                await JS.InvokeVoidAsync("alert", "インポートが完了しました。");
+                Nav.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", "エラーが発生しました: " + ex.Message);
+        }
+    }
+
+    private async Task ClearLogs()
+    {
+        if (await JS.InvokeAsync<bool>("confirm", "全ての記録データを削除しますか？"))
+        {
+            State.Logs.Clear();
+            await State.SaveLogsAsync();
+        }
+    }
+}

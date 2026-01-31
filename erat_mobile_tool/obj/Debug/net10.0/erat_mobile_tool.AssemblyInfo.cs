@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("erat_mobile_tool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33f716b37215a85e365f224fc23276d43554fb97")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+18e11b3921758afb5c14401c39596660b2732262")]
 [assembly: System.Reflection.AssemblyProductAttribute("erat_mobile_tool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("erat_mobile_tool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

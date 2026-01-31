@@ -33,6 +33,97 @@
     </div>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
     <script>navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' });</script>
+    <!--以降追加分↓-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let eratChart;
+        window.renderEratChart = (actualData, idealData, requiredData, progress, limits) => {
+            const ctx = document.getElementById('runChart').getContext('2d');
+            const container = document.getElementById('chartWrapper');
+
+            const shineIntensity = progress / 100;
+            const mainColor = `rgb(${progress * 2.55}, 255, 242)`;
+
+            if (container) {
+                container.style.boxShadow = `0 0 ${progress / 5}px rgba(0, 255, 242, ${shineIntensity})`;
+            }
+
+            if (eratChart) eratChart.destroy();
+
+            eratChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        {
+                            label: '現在ポイント',
+                            data: actualData,
+                            borderColor: mainColor,
+                            borderWidth: 3,
+                            backgroundColor: `rgba(0, 255, 242, 0.2)`,
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: limits.isFocus ? 5 : 2, // フォーカス時は点を大きく
+                            zIndex: 3
+                        },
+                        {
+                            label: '理想ペース',
+                            data: idealData,
+                            borderColor: 'rgba(255, 255, 255, 0.3)',
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: '必要ペース',
+                            data: requiredData,
+                            borderColor: 'rgba(255, 0, 255, 0.8)',
+                            borderWidth: 2,
+                            borderDash: [2, 2],
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            min: limits.minX,
+                            max: limits.maxX,
+                            ticks: {
+                                color: '#888',
+                                callback: v => {
+                                    const d = new Date(v);
+                                    return limits.isFocus ? `${d.getHours()}:${d.getMinutes().toString().padStart(2, '0')}` : `${d.getMonth() + 1}/${d.getDate()}`;
+                                }
+                            },
+                            grid: { color: '#333' }
+                        },
+                        y: {
+                            min: limits.minY,
+                            max: limits.maxY,
+                            ticks: { color: '#888' },
+                            grid: { color: '#444' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: !limits.isFocus, labels: { color: '#ccc' } } // フォーカス時は凡例を隠して広く使う
+                    }
+                }
+            });
+            window.downloadFile = (fileName, content) => {
+                const blob = new Blob([content], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const anchor = document.createElement('a');
+                anchor.href = url;
+                anchor.download = fileName;
+                anchor.click();
+                URL.revokeObjectURL(url);
+            };
+        };
+    </script>
 </body>
 
 </html>
