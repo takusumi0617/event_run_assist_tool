@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
-using System.Reflection.Emit;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;

@@ -309,11 +309,11 @@ namespace event_run_assist_tool
                 case 3:
                     return 15;
                 case 4:
-                    return 19;
+                    return 20;
                 case 5:
-                    return 23;
+                    return 25;
                 case 6:
-                    return 26;
+                    return 27;
                 case 7:
                     return 29;
                 case 8:
