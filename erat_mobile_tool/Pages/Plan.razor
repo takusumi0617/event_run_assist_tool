@@ -1,0 +1,330 @@
+﻿@page "/plan"
+@using System.Text.Json
+@using System.Text
+@using erat_mobile_tool.Models
+@using erat_mobile_tool.Services
+@inject AppState State
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<style>
+    .text-cyan {
+        color: #00FFF2;
+    }
+
+    .text-magenta {
+        color: #FF00FF;
+    }
+
+    .text-yellow {
+        color: #FFD700;
+    }
+
+    .form-check-label {
+        color: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .section-label {
+        font-size: 0.75rem;
+        color: #6c757d;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .neon-border-info {
+        border: 1px solid #00FFF2 !important;
+    }
+</style>
+
+<div class="container-fluid mt-2 pb-5" style="max-width: 1000px;">
+    <h3 class="text-cyan fw-bold mb-3 border-bottom border-info border-2 pb-2">イベラン計画作成</h3>
+
+    <div class="row g-3">
+        @* --- 1. 目標ポイント設定 --- *@
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary h-100 shadow">
+                <div class="card-header bg-secondary bg-opacity-25 text-info fw-bold border-secondary d-flex justify-content-between">
+                    <span>1. 目標ポイント設定</span>
+                    <div class="position-relative" style="cursor: pointer;">
+                        <span class="badge bg-info text-dark">JSONインポート</span>
+                        <InputFile OnChange="ImportPlan" class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="targetMode" id="autoMode" checked="@isAutoTarget" @onchange="() => SetTargetMode(true)">
+                        <label class="form-check-label text-light fw-bold" for="autoMode">ユニット一覧から自動設定</label>
+                    </div>
+
+                    <div class="ms-4 mb-3 p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-25">
+                        <div class="section-label mb-1">ユニットタイプ</div>
+                        <select class="form-select form-select-sm bg-secondary text-white border-0 mb-2" disabled="@(!isAutoTarget)" @onchange="OnUnitChanged">
+                            @foreach (var unit in UnitNames)
+                            {
+                                <option value="@unit" selected="@(selectedUnit == unit)">@unit</option>
+                            }
+                        </select>
+                        <div class="section-label mb-1">順位</div>
+                        <select class="form-select form-select-sm bg-secondary text-white border-0" disabled="@(!isAutoTarget)" @onchange="OnRankChanged">
+                            @foreach (var rank in RankOptions)
+                            {
+                                <option value="@rank" selected="@(selectedRank == rank)">@rank</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="targetMode" id="manualMode" checked="@(!isAutoTarget)" @onchange="() => SetTargetMode(false)">
+                        <label class="form-check-label text-light fw-bold" for="manualMode">手動設定</label>
+                    </div>
+                    <div class="input-group input-group-sm ms-4 w-75">
+                        <input type="number" class="form-control bg-secondary text-white border-0" disabled="@isAutoTarget" @bind="GoalPoints" />
+                        <span class="input-group-text bg-dark text-secondary border-secondary">Pt</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* --- 2. 所持物資数の入力 --- *@
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary h-100 shadow">
+                <div class="card-header bg-secondary bg-opacity-25 text-info fw-bold border-secondary">2. 所持物資数の入力</div>
+                <div class="card-body">
+                    <div class="row g-2 mb-2">
+                        <div class="col-6">
+                            <div class="section-label">ライボ(小)</div>
+                            <input type="number" class="form-control form-control-sm bg-secondary text-white border-0" @bind="Resource.SmallDrink" />
+                        </div>
+                        <div class="col-6">
+                            <div class="section-label">ライボ(大)</div>
+                            <input type="number" class="form-control form-control-sm bg-secondary text-white border-0" @bind="Resource.LargeDrink" />
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-2">
+                        <div class="col-6">
+                            <div class="section-label">限定ドリンク</div>
+                            <input type="number" class="form-control form-control-sm bg-secondary text-white border-0" @bind="Resource.LimitedDrink" />
+                        </div>
+                        <div class="col-6">
+                            <div class="section-label">クリスタル</div>
+                            <input type="number" class="form-control form-control-sm bg-secondary text-white border-0" @bind="Resource.Crystals" />
+                        </div>
+                    </div>
+                    <div class="section-label">その他(ライボ小換算)</div>
+                    <input type="number" class="form-control form-control-sm bg-secondary text-white border-0" @bind="Resource.Others" />
+                </div>
+            </div>
+        </div>
+
+        @* --- 3. 環境変数の設定 --- *@
+        <div class="col-12">
+            <div class="card bg-dark border-secondary shadow">
+                <div class="card-header bg-secondary bg-opacity-25 text-info fw-bold border-secondary">3. 環境変数の設定</div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="section-label">イベント期間</div>
+                            <div class="input-group input-group-sm mb-2">
+                                <span class="input-group-text bg-dark text-secondary border-secondary small">開始</span>
+                                <input type="datetime-local" class="form-control bg-secondary text-white border-0" @bind="PlanStart" />
+                            </div>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-dark text-secondary border-secondary small">終了</span>
+                                <input type="datetime-local" class="form-control bg-secondary text-white border-0" @bind="PlanEnd" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="section-label">焚き数 (0-10)</div>
+                                    <input type="number" class="form-control form-control-sm bg-secondary text-white border-0" @bind="EnergyConsumption" />
+                                </div>
+                                <div class="col-6">
+                                    <div class="section-label">0焚き時Pt</div>
+                                    <input type="number" class="form-control form-control-sm bg-secondary text-white border-0" @bind="BasePoints" />
+                                </div>
+                                <div class="col-12">
+                                    <div class="section-label">1曲の平均時間(ロード込/分)</div>
+                                    <input type="number" class="form-control form-control-sm bg-secondary text-white border-0" @bind="MinutesPerSong" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* --- 計算結果プレビュー --- *@
+    <div class="mt-4 p-3 rounded bg-dark border border-info border-2 shadow text-center">
+        <button class="btn btn-info fw-bold px-5 mb-4 text-dark shadow-sm" @onclick="Calculate">プレビュー計算</button>
+
+        <div class="row g-2 mb-3">
+            <div class="col-md-4">
+                <div class="text-secondary small fw-bold">予想総ポイント数</div>
+                <div class="h3 fw-bold text-white">@CalculatedTotalPoints.ToString("N0") <small class="h6">Pt</small></div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-secondary small fw-bold">目標達成率</div>
+                <div class="h3 fw-bold text-magenta">@AchievementRate.ToString("F3") <small class="h6">%</small></div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-secondary small fw-bold">予想稼働時間 / 日</div>
+                <div class="h3 fw-bold text-yellow">@DailyPlayTime.ToString("F1") <small class="h6">時間</small></div>
+            </div>
+        </div>
+
+        @if (CalculatedTotalPoints > 0)
+        {
+            <div class="d-flex justify-content-center gap-2">
+                <button class="btn btn-success fw-bold px-4" @onclick="ApplyToApp">アプリの設定に反映する</button>
+                <button class="btn btn-outline-info" @onclick="SavePlan">プランを保存(JSON)</button>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private bool isAutoTarget = true;
+    private string selectedUnit = "Leo/need";
+    private string selectedRank = "100位";
+    private long GoalPoints = 88880000;
+
+    private ResourceInput Resource = new();
+    private int EnergyConsumption = 3;
+    private int BasePoints = 1500;
+    private double MinutesPerSong = 4;
+
+    // 日時管理
+    private DateTime PlanStart;
+    private DateTime PlanEnd;
+
+    private long CalculatedTotalPoints = 0;
+    private double AchievementRate = 0;
+    private double DailyPlayTime = 0;
+
+    protected override void OnInitialized()
+    {
+        // デフォルト値の設定
+        DateTime now = DateTime.Now;
+        PlanStart = new DateTime(now.Year, now.Month, now.Day, 15, 0, 0);
+        PlanEnd = PlanStart.AddDays(9).Date.AddHours(21);
+    }
+
+    private void SetTargetMode(bool auto) { isAutoTarget = auto; if (auto) UpdateTargetPoints(); }
+    private void OnUnitChanged(ChangeEventArgs e) { selectedUnit = e.Value?.ToString() ?? ""; UpdateTargetPoints(); }
+    private void OnRankChanged(ChangeEventArgs e) { selectedRank = e.Value?.ToString() ?? ""; UpdateTargetPoints(); }
+    private void UpdateTargetPoints() { if (isAutoTarget) GoalPoints = GetPresetPoints(selectedUnit, selectedRank); }
+
+    private void Calculate()
+    {
+        int totalEnergy = Resource.SmallDrink + (Resource.LargeDrink * 10) + (Resource.LimitedDrink * 10) + (Resource.Others / 10);
+        int mag = GetMagnification(EnergyConsumption);
+        int ppt = BasePoints * mag;
+        if (EnergyConsumption == 0) return;
+        int frequency = totalEnergy / EnergyConsumption;
+
+        CalculatedTotalPoints = (long)ppt * frequency;
+        AchievementRate = GoalPoints > 0 ? (double)CalculatedTotalPoints / GoalPoints * 100 : 0;
+
+        // 稼働時間の計算 (WinFormsロジック: (曲時間 * 回数 * 24) / 総イベント時間(分))
+        double totalEventMinutes = (PlanEnd - PlanStart).TotalMinutes;
+        if (totalEventMinutes <= 0) return;
+        DailyPlayTime = (MinutesPerSong * frequency * 24) / totalEventMinutes;
+    }
+
+    private async Task ApplyToApp()
+    {
+        State.Config.EventName = $"[計画] {selectedUnit} {selectedRank}";
+        State.Config.GoalPoints = GoalPoints;
+        State.Config.StartTime = PlanStart;
+        State.Config.EndTime = PlanEnd;
+        await State.SaveConfigAsync();
+
+        await JS.InvokeVoidAsync("alert", "目標ポイントと開催期間をアプリの設定に反映しました。");
+        Nav.NavigateTo("/");
+    }
+
+    private async Task SavePlan()
+    {
+        var dic = new Dictionary<string, string> {
+            { "goal", GoalPoints.ToString() },
+            { "rank", selectedRank },
+            { "speed", EnergyConsumption.ToString() },
+            { "pppA", BasePoints.ToString() },
+            { "starttime", PlanStart.ToString() },
+            { "endtime", PlanEnd.ToString() },
+            { "tpp", MinutesPerSong.ToString() }
+        };
+        var json = JsonSerializer.Serialize(dic);
+        await JS.InvokeVoidAsync("downloadFile", $"plan_{DateTime.Now:yyyyMMdd}.json", json);
+    }
+
+    private async Task ImportPlan(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            using var reader = new System.IO.StreamReader(e.File.OpenReadStream());
+            var json = await reader.ReadToEndAsync();
+            var dic = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+
+            if (dic != null)
+            {
+                if (dic.ContainsKey("goal")) GoalPoints = long.Parse(dic["goal"]);
+                if (dic.ContainsKey("rank")) selectedRank = dic["rank"];
+                if (dic.ContainsKey("speed")) EnergyConsumption = int.Parse(dic["speed"]);
+                if (dic.ContainsKey("pppA")) BasePoints = int.Parse(dic["pppA"]);
+                if (dic.ContainsKey("starttime")) PlanStart = DateTime.Parse(dic["starttime"]);
+                if (dic.ContainsKey("endtime")) PlanEnd = DateTime.Parse(dic["endtime"]);
+                if (dic.ContainsKey("tpp")) MinutesPerSong = double.Parse(dic["tpp"]);
+
+                isAutoTarget = false; // 手動モードに切り替え
+                StateHasChanged();
+                await JS.InvokeVoidAsync("alert", "プランを読み込みました。");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", "インポートに失敗しました: " + ex.Message);
+        }
+    }
+
+    private int GetMagnification(int cons) => cons switch
+    {
+        0 => 1,
+        1 => 5,
+        2 => 10,
+        3 => 15,
+        4 => 20,
+        5 => 25,
+        6 => 27,
+        7 => 29,
+        8 => 31,
+        9 => 33,
+        10 => 35,
+        _ => 0
+    };
+
+    private string[] UnitNames = { "VirtualSinger", "Leo/need", "MORE MORE JUMP！", "Vivid BAD SQUAD", "ワンダーランズ×ショウタイム", "25時、ナイトコードで。", "(混合)" };
+    private string[] RankOptions = { "1位", "50位", "100位", "200位(精度低)", "500位(精度低)", "1000位" };
+
+    private long GetPresetPoints(string unit, string rank)
+    {
+        // AppState の Presets 辞書から取得を試みる
+        if (State.Presets.ContainsKey(unit) && State.Presets[unit].ContainsKey(rank))
+        {
+            return State.Presets[unit][rank];
+        }
+        return 0; // 見つからない場合 (VirtualSinger等)
+    }
+
+    public class ResourceInput
+    {
+        public int SmallDrink { get; set; } = 0;
+        public int LargeDrink { get; set; } = 0;
+        public int LimitedDrink { get; set; } = 0;
+        public int Crystals { get; set; } = 0;
+        public int Others { get; set; } = 0;
+    }
+}

@@ -5,27 +5,17 @@
 @inject IJSRuntime JS
 
 <style>
-    /* 進捗度（Progress）専用の発光エフェクト */
     .glow-progress {
         color: #00FFF2;
         text-shadow: 0 0 8px rgba(0, 255, 242, 0.8), 0 0 15px rgba(0, 255, 242, 0.4);
     }
 
-    /* その他のカラー定義（発光なし） */
     .text-cyan {
         color: #00FFF2;
     }
 
     .text-yellow {
         color: #FFD700;
-    }
-
-    .text-magenta {
-        color: #FF00FF;
-    }
-
-    .text-red {
-        color: #FF4D4D;
     }
 
     .text-white {
@@ -36,7 +26,14 @@
         color: rgba(255, 255, 255, 0.5);
     }
 
-    /* カードの枠線設定 */
+    .text-red {
+        color: #FF4D4D;
+    }
+
+    .text-predicted {
+        color: #00FF64;
+    }
+
     .neon-border-info {
         border: 1px solid #00FFF2 !important;
     }
@@ -45,61 +42,64 @@
         border: 1px solid #FF4D4D !important;
         background: rgba(255, 77, 77, 0.05) !important;
     }
+
+    /* フォーカスモード時の操作案内 */
+    .interaction-hint {
+        font-size: 0.7rem;
+        color: #888;
+        margin-top: 4px;
+    }
 </style>
 
 <div class="container-fluid mt-2 pb-5" style="max-width: 1400px;">
     @* --- ヘッダー --- *@
-    <div class="px-3 py-2 mb-3 rounded bg-dark border-bottom border-info border-2 d-flex justify-content-between align-items-center shadow neon-border-info">
+    <div class="px-3 py-2 mb-3 rounded bg-dark border-bottom border-info border-2 d-flex justify-content-between align-items-center shadow neon-border-info text-light">
         <div>
             <h5 class="text-cyan fw-bold mb-0">@State.Config.EventName</h5>
             <span class="text-secondary small">@State.Config.StartTime.ToString("MM/dd HH:mm") ～ @State.Config.EndTime.ToString("MM/dd HH:mm")</span>
         </div>
-        <div class="btn-group shadow-sm">
-            <button class="btn btn-sm @(isFocusMode ? "btn-outline-info" : "btn-info text-dark fw-bold")" @onclick="() => SetFocusMode(false)">全景</button>
-            <button class="btn btn-sm @(isFocusMode ? "btn-info text-dark fw-bold" : "btn-outline-info")" @onclick="() => SetFocusMode(true)">フォーカス</button>
+        <div class="d-flex flex-column align-items-end">
+            <div class="btn-group shadow-sm">
+                <button class="btn btn-sm @(isFocusMode ? "btn-outline-info" : "btn-info text-dark fw-bold")" @onclick="() => SetFocusMode(false)">全景</button>
+                <button class="btn btn-sm @(isFocusMode ? "btn-info text-dark fw-bold" : "btn-outline-info")" @onclick="() => SetFocusMode(true)">フォーカス</button>
+            </div>
+            @if (isFocusMode)
+            {
+                <span class="interaction-hint"><i class="oi oi-move"></i> ドラッグで移動 / スクロールでズーム</span>
+            }
         </div>
     </div>
 
     @* --- 統合KPIカード --- *@
-    <div class="card bg-dark border-secondary shadow-lg mb-3 overflow-hidden">
-        <div class="card-body p-0 text-center">
+    <div class="card bg-dark border-secondary shadow-lg mb-3 overflow-hidden text-light text-center">
+        <div class="card-body p-0">
             <div class="row g-0">
-                @* 1. 進捗度（ここだけ光る） *@
                 <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
                     <div class="small fw-bold text-uppercase text-info" style="font-size: 0.65rem;">Progress</div>
                     <div class="h4 fw-bold mb-0 glow-progress">@ProgressPercent.ToString("F1")<small class="h6">%</small></div>
                 </div>
-
-                @* 2. 現在ポイント *@
                 <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
                     <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">Current</div>
                     <div class="h4 fw-bold mb-0 text-white">@CurrentPoints.ToString("N0")</div>
                 </div>
-
-                @* 3. 目標ポイント *@
-                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
+                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2 text-white-50">
                     <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">Target</div>
-                    <div class="h4 fw-bold mb-0 text-muted-white">@State.Config.GoalPoints.ToString("N0")</div>
+                    <div class="h4 fw-bold mb-0">@State.Config.GoalPoints.ToString("N0")</div>
                 </div>
-
-                @* 4. 残り時間 *@
-                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
-                    <div class="text-warning small fw-bold text-uppercase" style="font-size: 0.65rem;">Remaining</div>
+                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2 text-predicted">
+                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">Predicted (Avg)</div>
+                    <div class="h4 fw-bold mb-0">@PredictedFinalPoints.ToString("N0")</div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2 text-warning">
+                    <div class="small fw-bold text-uppercase" style="font-size: 0.65rem;">Remaining</div>
                     <div class="h4 fw-bold mb-0 font-monospace text-yellow">
                         @($"{TimeRemaining.Days}d {TimeRemaining.Hours:D2}:{TimeRemaining.Minutes:D2}:{TimeRemaining.Seconds:D2}")
                     </div>
                 </div>
-
-                @* 5. 現在時速 *@
-                <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
-                    <div class="text-info small fw-bold text-uppercase" style="font-size: 0.65rem;">Current Rate</div>
-                    <div class="h4 fw-bold mb-0 text-cyan">@CurrentHourlyRate.ToString("N0")</div>
-                </div>
-
-                @* 6. 必要時速 *@
                 <div class="col-6 col-md-4 col-lg-2 border-bottom border-secondary p-2 @(CurrentHourlyRate < RequiredHourlyRate && CurrentPoints < State.Config.GoalPoints ? "neon-border-danger" : "")">
-                    <div class="small fw-bold text-uppercase @(CurrentHourlyRate < RequiredHourlyRate ? "text-red" : "text-secondary")" style="font-size: 0.65rem;">Required</div>
+                    <div class="small fw-bold text-uppercase @(CurrentHourlyRate < RequiredHourlyRate ? "text-red" : "text-secondary")" style="font-size: 0.65rem;">Required Rate</div>
                     <div class="h4 fw-bold mb-0 @(CurrentHourlyRate < RequiredHourlyRate ? "text-red" : "text-muted-white")">@RequiredHourlyRate.ToString("N0")</div>
+                    <div class="small text-cyan" style="font-size: 0.6rem;">Avg: @CurrentHourlyRate.ToString("N0")</div>
                 </div>
             </div>
         </div>
@@ -108,24 +108,20 @@
     @* --- 入力とグラフ --- *@
     <div class="row g-3">
         <div class="col-12">
-            <div class="card bg-dark border-secondary shadow-sm">
-                <div class="card-body p-2">
+            <div class="card bg-dark border-secondary shadow-sm neon-border-info">
+                <div class="card-body p-2 text-light">
                     <div class="input-group">
                         <input type="number" class="form-control bg-dark text-white border-secondary"
-                               placeholder="現在ポイントを入力してEnter"
-                               @bind="inputVal"
-                               @bind:event="oninput"
-                               @onkeyup="HandleKeyUp" />
+                               placeholder="現在ポイントを入力してEnter" @bind="inputVal" @bind:event="oninput" @onkeyup="HandleKeyUp" />
                         <button class="btn btn-info fw-bold px-4 text-dark" @onclick="RecordPoint">記録</button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-12">
-            <div id="chartWrapper" class="card bg-dark border-secondary shadow-sm transition-all" style="transition: all 0.5s ease; border-width: 2px;">
+        <div class="col-12 text-light">
+            <div id="chartWrapper" class="card bg-dark border-secondary shadow-sm" style="transition: border-color 0.5s ease; border-width: 2px;">
                 <div class="card-body p-1">
-                    <div style="height: 400px; width: 100%; position: relative;">
+                    <div style="height: 420px; width: 100%; position: relative; cursor: @(isFocusMode ? "grab" : "default");">
                         <canvas id="runChart"></canvas>
                     </div>
                 </div>
@@ -144,11 +140,23 @@
     {
         get
         {
-            if (State.Logs.Count < 2) return 0;
-            var last = State.Logs[^1];
-            var prev = State.Logs[^2];
-            var hourDiff = (last.Timestamp - prev.Timestamp).TotalHours;
-            return hourDiff > 0.001 ? (long)((last.Value - prev.Value) / hourDiff) : 0;
+            var lastLog = State.Logs.LastOrDefault();
+            if (lastLog == null) return 0;
+            var timeSinceStart = lastLog.Timestamp - State.Config.StartTime;
+            return timeSinceStart.TotalMinutes < 1 ? 0 : (long)(CurrentPoints / timeSinceStart.TotalHours);
+        }
+    }
+
+    private long PredictedFinalPoints
+    {
+        get
+        {
+            var lastLog = State.Logs.LastOrDefault();
+            if (lastLog == null) return 0;
+            var timeSinceStart = lastLog.Timestamp - State.Config.StartTime;
+            if (timeSinceStart.TotalMinutes < 1) return 0;
+            var totalDuration = State.Config.EndTime - State.Config.StartTime;
+            return (long)(CurrentPoints / timeSinceStart.TotalHours * totalDuration.TotalHours);
         }
     }
 
@@ -188,10 +196,7 @@
         await UpdateChart();
     }
 
-    private async Task HandleKeyUp(KeyboardEventArgs e)
-    {
-        if (e.Key == "Enter") await RecordPoint();
-    }
+    private async Task HandleKeyUp(KeyboardEventArgs e) { if (e.Key == "Enter") await RecordPoint(); }
 
     private async Task UpdateTimer()
     {
@@ -220,13 +225,18 @@
             new { x = ((DateTimeOffset)reqStart).ToUnixTimeMilliseconds(), y = CurrentPoints },
             new { x = ((DateTimeOffset)State.Config.EndTime).ToUnixTimeMilliseconds(), y = State.Config.GoalPoints }
         };
+        var predicted = new[] {
+            new { x = ((DateTimeOffset)State.Config.StartTime).ToUnixTimeMilliseconds(), y = 0L },
+            new { x = ((DateTimeOffset)State.Config.EndTime).ToUnixTimeMilliseconds(), y = PredictedFinalPoints }
+        };
 
         object limits;
         if (isFocusMode)
         {
+            // 初期表示用のズーム範囲を計算
             var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            var windowX = 3 * 60 * 60 * 1000;
-            var windowY = Math.Max(100000, RequiredHourlyRate * 2);
+            var windowX = 4 * 60 * 60 * 1000; // ±4時間
+            var windowY = Math.Max(150000, RequiredHourlyRate * 3);
             limits = new { isFocus = true, minX = now - windowX, maxX = now + windowX, minY = CurrentPoints - windowY, maxY = CurrentPoints + windowY };
         }
         else
@@ -234,15 +244,11 @@
             limits = new { isFocus = false, minX = ((DateTimeOffset)State.Config.StartTime).ToUnixTimeMilliseconds(), maxX = ((DateTimeOffset)State.Config.EndTime).ToUnixTimeMilliseconds(), minY = 0, maxY = State.Config.GoalPoints };
         }
 
-        await JS.InvokeVoidAsync("renderEratChart", actual, ideal, required, ProgressPercent, limits);
+        await JS.InvokeVoidAsync("renderEratChart", actual, ideal, required, predicted, ProgressPercent, limits);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            await Task.Delay(100);
-            await UpdateChart();
-        }
+        if (firstRender) { await Task.Delay(150); await UpdateChart(); }
     }
 }
