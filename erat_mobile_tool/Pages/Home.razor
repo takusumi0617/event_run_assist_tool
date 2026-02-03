@@ -75,31 +75,31 @@
         <div class="card-body p-0">
             <div class="row g-0">
                 <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
-                    <div class="small fw-bold text-uppercase text-info" style="font-size: 0.65rem;">Progress</div>
+                    <div class="small fw-bold text-uppercase text-info" style="font-size: 0.65rem;">目標達成率</div>
                     <div class="h4 fw-bold mb-0 glow-progress">@ProgressPercent.ToString("F1")<small class="h6">%</small></div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2">
-                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">Current</div>
+                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">現在ポイント値</div>
                     <div class="h4 fw-bold mb-0 text-white">@CurrentPoints.ToString("N0")</div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2 text-white-50">
-                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">Target</div>
+                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">目標ポイント値</div>
                     <div class="h4 fw-bold mb-0">@State.Config.GoalPoints.ToString("N0")</div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2 text-predicted">
-                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">Predicted (Avg)</div>
+                    <div class="text-secondary small fw-bold text-uppercase" style="font-size: 0.65rem;">終了時予測ポイント値</div>
                     <div class="h4 fw-bold mb-0">@PredictedFinalPoints.ToString("N0")</div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2 border-end border-bottom border-secondary p-2 text-warning">
-                    <div class="small fw-bold text-uppercase" style="font-size: 0.65rem;">Remaining</div>
+                    <div class="small fw-bold text-uppercase" style="font-size: 0.65rem;">残り時間</div>
                     <div class="h4 fw-bold mb-0 font-monospace text-yellow">
                         @($"{TimeRemaining.Days}d {TimeRemaining.Hours:D2}:{TimeRemaining.Minutes:D2}:{TimeRemaining.Seconds:D2}")
                     </div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2 border-bottom border-secondary p-2 @(CurrentHourlyRate < RequiredHourlyRate && CurrentPoints < State.Config.GoalPoints ? "neon-border-danger" : "")">
-                    <div class="small fw-bold text-uppercase @(CurrentHourlyRate < RequiredHourlyRate ? "text-red" : "text-secondary")" style="font-size: 0.65rem;">Required Rate</div>
+                    <div class="small fw-bold text-uppercase @(CurrentHourlyRate < RequiredHourlyRate ? "text-red" : "text-secondary")" style="font-size: 0.65rem;">必要時速(Pt/h)</div>
                     <div class="h4 fw-bold mb-0 @(CurrentHourlyRate < RequiredHourlyRate ? "text-red" : "text-muted-white")">@RequiredHourlyRate.ToString("N0")</div>
-                    <div class="small text-cyan" style="font-size: 0.6rem;">Avg: @CurrentHourlyRate.ToString("N0")</div>
+                    <div class="small text-cyan" style="font-size: 0.6rem;">現在時速(Pt/h): @CurrentHourlyRate.ToString("N0")</div>
                 </div>
             </div>
         </div>
@@ -111,6 +111,9 @@
             <div class="card bg-dark border-secondary shadow-sm neon-border-info">
                 <div class="card-body p-2 text-light">
                     <div class="input-group">
+                        <div style="display: flex; align-items: center;">
+                            現在合計ポイント:
+                        </div>
                         <input type="number" class="form-control bg-dark text-white border-secondary"
                                placeholder="現在ポイントを入力してEnter" @bind="inputVal" @bind:event="oninput" @onkeyup="HandleKeyUp" />
                         <button class="btn btn-info fw-bold px-4 text-dark" @onclick="RecordPoint">記録</button>
