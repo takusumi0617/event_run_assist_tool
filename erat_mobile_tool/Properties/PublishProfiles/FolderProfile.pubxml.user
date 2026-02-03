@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\takus\Documents\20.git\event_run_assist_tool\erat_mobile_tool\bin\Release\net10.0\browser-wasm\publish\</_PublishTargetUrl>
-    <History>True|2026-02-01T11:09:55.1255548Z||;</History>
+    <History>True|2026-02-03T15:51:16.3797353Z||;True|2026-02-03T23:56:33.5325764+09:00||;True|2026-02-01T20:09:55.1255548+09:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

@@ -25,11 +25,14 @@ async function onInstall(event) {
         .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
         .map(asset => new Request(asset.url, { integrity: asset.hash, cache: 'no-cache' }));
     await caches.open(cacheName).then(cache => cache.addAll(assetsRequests));
+    self.skipWaiting();
 }
 
 async function onActivate(event) {
     console.info('Service worker: Activate');
 
+    // 追加: すべてのクライアント（タブ）を即座に新しいSWの制御下におく
+    event.waitUntil(clients.claim());
     // Delete unused caches
     const cacheKeys = await caches.keys();
     await Promise.all(cacheKeys
